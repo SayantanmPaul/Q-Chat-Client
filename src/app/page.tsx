@@ -1,103 +1,129 @@
-import Image from "next/image";
+'use client';
+import ChatHistoryList from '@/components/chat-window/ChatHistoryList';
+import NewChatButton from '@/components/chat-window/NewChatButton';
+import { Sidebar, SidebarBody } from '@/components/ui/sidebar';
+import { cn } from '@/lib/utils';
+import { AnimatePresence, motion } from 'motion/react';
+import Image from 'next/image';
+import { useState } from 'react';
+import { IconLayoutSidebarRightExpand } from '@tabler/icons-react';
+import { Button } from '@/components/ui/button';
 
 export default function Home() {
-  return (
-    <div className="grid min-h-screen grid-rows-[20px_1fr_20px] items-center justify-items-center gap-16 p-8 pb-20 font-[family-name:var(--font-geist-sans)] sm:p-20">
-      <main className="row-start-2 flex flex-col items-center gap-[32px] sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-center font-[family-name:var(--font-geist-mono)] text-sm/6 sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="rounded bg-black/[.05] px-1 py-0.5 font-[family-name:var(--font-geist-mono)] font-semibold dark:bg-white/[.06]">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [open, setOpen] = useState(true);
 
-        <div className="flex flex-col items-center gap-4 sm:flex-row">
-          <a
-            className="bg-foreground text-background flex h-10 items-center justify-center gap-2 rounded-full border border-solid border-transparent px-4 text-sm font-medium transition-colors hover:bg-[#383838] sm:h-12 sm:w-auto sm:px-5 sm:text-base dark:hover:bg-[#ccc]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="flex h-10 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-4 text-sm font-medium transition-colors hover:border-transparent hover:bg-[#f2f2f2] sm:h-12 sm:w-auto sm:px-5 sm:text-base md:w-[158px] dark:border-white/[.145] dark:hover:bg-[#1a1a1a]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex flex-wrap items-center justify-center gap-[24px]">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+  return (
+    <div
+      className={cn(
+        'mx-auto flex w-full flex-1 flex-col overflow-hidden rounded-md border border-neutral-200 bg-gray-100 md:flex-row dark:border-neutral-700 dark:bg-neutral-800',
+        'h-screen', // for your use case, use `h-screen` instead of `h-[60vh]`
+      )}
+    >
+      <Sidebar open={open} setOpen={setOpen}>
+        <SidebarBody className="justify-between gap-10">
+          <div className="flex flex-1 flex-col gap-8 overflow-x-hidden overflow-y-auto">
+            <div className="flex h-min flex-col gap-8 px-2">
+              <div className="flex items-center justify-between">
+                {open ? <Logo /> : <LogoIcon open={open} setOpen={setOpen} />}
+                {open && <CloseSidebarButton setOpen={setOpen} />}
+              </div>
+              <NewChatButton open={open} />
+            </div>
+            <AnimatePresence>{open && <ChatHistoryList />}</AnimatePresence>
+          </div>
+        </SidebarBody>
+      </Sidebar>
+      <Dashboard />
     </div>
   );
 }
+
+const Logo = () => {
+  return (
+    <a
+      href="#"
+      className="relative z-20 flex items-center space-x-2 py-1 text-sm font-normal"
+    >
+      <Image
+        src="../logo/Q.svg"
+        className="h-9 w-9"
+        width={60}
+        height={60}
+        alt="Q"
+        draggable={false}
+      />
+      <motion.span
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="font-briColage text-3xl font-medium whitespace-pre text-black dark:text-white"
+      >
+        chat
+      </motion.span>
+    </a>
+  );
+};
+
+const LogoIcon = ({
+  open,
+  setOpen,
+}: {
+  open: boolean;
+  setOpen?: (open: boolean) => void;
+}) => {
+  return (
+    <button
+      onClick={() => setOpen?.(!open)}
+      className="relative z-20 flex cursor-pointer items-center space-x-2 py-1"
+    >
+      <Image
+        src="../logo/Q.svg"
+        className="h-9 w-9"
+        width={60}
+        height={60}
+        alt="Q"
+        draggable={false}
+      />
+    </button>
+  );
+};
+
+const Dashboard = () => {
+  return (
+    <div className="flex flex-1">
+      <div className="flex h-full w-full flex-1 flex-col gap-2 border-r border-neutral-200 bg-white p-2 md:p-10 dark:border-neutral-700 dark:bg-neutral-900">
+        <div className="flex gap-2">
+          {[...new Array(4)].map((i, idx) => (
+            <div
+              key={'first-array-demo-1' + idx}
+              className="h-20 w-full animate-pulse rounded-lg bg-gray-100 dark:bg-neutral-800"
+            ></div>
+          ))}
+        </div>
+        <div className="flex flex-1 gap-2">
+          {[...new Array(2)].map((i, idx) => (
+            <div
+              key={'second-array-demo-1' + idx}
+              className="h-full w-full animate-pulse rounded-lg bg-gray-100 dark:bg-neutral-800"
+            ></div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const CloseSidebarButton = ({
+  setOpen,
+}: {
+  setOpen: (open: boolean) => void;
+}) => {
+  return (
+    <Button
+      onClick={() => setOpen(!open)}
+      variant="ghost"
+      className="hover:dark:bg-popover z-10 w-fit"
+    >
+      <IconLayoutSidebarRightExpand stroke={2} size={25} />
+    </Button>
+  );
+};
