@@ -1,13 +1,38 @@
 @import 'tailwindcss';
-@import "tw-animate-css";
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
+
+@font-face {
+  font-family: 'Bricolage Grotesque';
+  font-display: swap;
+  src: url('../../assets/fonts/BricolageGrotesque-SemiBold.woff2')
+    format('woff2');
+}
+
+@font-face {
+  font-family: 'Departure Mono';
+  font-display: swap;
+  src: url('../../assets/fonts/DepartureMono-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Jost';
+  font-display: swap;
+  src: url('../../assets/fonts/Jost-400-Book.woff2') format('woff2');
+}
+
+@theme {
+  --font-briColage: 'Bricolage Grotesque', sans-serif;
+  --font-departureMono: 'Departure Mono', 'monospace';
+  --font-jost: 'Jost', sans-serif;
+}
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-jost);
+  --font-mono: var(--font-departureMono);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -37,7 +62,13 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
-  --radius-sm: calc(var(--radius) - 4px);
+
+  --color-black-100: var(--black-100) --color-black-200: var(--black-200)
+    --color-black-300: var(--black-300) --color-black-400: var(--black-400)
+    --color-black-500: var(--black-500) --color-white-100: var(--white-100)
+    --color-white-200: var(--white-200) --color-white-300: var(--white-300)
+    --color-white-400: var(--white-400) --color-white-500: var(--white-500)
+    --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
@@ -76,16 +107,30 @@
   --sidebar-accent-foreground: oklch(0.216 0.006 56.043);
   --sidebar-border: oklch(0.923 0.003 48.717);
   --sidebar-ring: oklch(0.709 0.01 56.259);
+
+  /* Utility blacks */
+  --black-500: #0d0d0d;
+  --black-400: #121212;
+  --black-300: #161616;
+  --black-200: #3d3d3d;
+  --black-100: #8a8a8a;
+
+  /* Utility whites */
+  --white-500: #ffffff;
+  --white-400: #fbfbfb;
+  --white-300: #efefef;
+  --white-200: #e0e0e0;
+  --white-100: #d2d2d2;
 }
 
 .dark {
-  --background: oklch(0.147 0.004 49.25);
+  --background: #0d0d0d;
   --foreground: oklch(0.985 0.001 106.423);
   --card: oklch(0.216 0.006 56.043);
   --card-foreground: oklch(0.985 0.001 106.423);
   --popover: oklch(0.216 0.006 56.043);
   --popover-foreground: oklch(0.985 0.001 106.423);
-  --primary: oklch(0.923 0.003 48.717);
+  --primary: #00ffc6;
   --primary-foreground: oklch(0.216 0.006 56.043);
   --secondary: oklch(0.268 0.007 34.298);
   --secondary-foreground: oklch(0.985 0.001 106.423);
@@ -110,6 +155,24 @@
   --sidebar-accent-foreground: oklch(0.985 0.001 106.423);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.553 0.013 58.071);
+
+  /* Utility blacks */
+  --black-500: #0d0d0d;
+  --black-400: #121212;
+  --black-300: #161616;
+  --black-200: #3d3d3d;
+  --black-100: #8a8a8a;
+
+  /* Utility whites */
+  --white-500: #ffffff;
+  --white-400: #fbfbfb;
+  --white-300: #efefef;
+  --white-200: #e0e0e0;
+  --white-100: #d2d2d2;
+
+  --font-briColage: 'Bricolage Grotesque', sans-serif;
+  --font-departureMono: 'Departure Mono', 'monospace';
+  --font-jost: 'Jost', sans-serif;
 }
 
 @layer base {
@@ -118,5 +181,8 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-briColage);
+    font-family: var(--font-departureMono);
+    font-family: var(--font-jost);
   }
 }
