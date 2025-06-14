@@ -92,7 +92,11 @@ const ChatHistoryItemMenu = ({
           <IconDots stroke={2} className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-48 font-mono font-medium" align="start">
+      <DropdownMenuContent
+        sideOffset={12}
+        className="w-48 font-mono font-medium"
+        align="start"
+      >
         <DropdownMenuGroup>
           <DropdownMenuItem className="flex items-center gap-2">
             <IconPin className="h-3 w-3" stroke={1.5} />

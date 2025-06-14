@@ -7,12 +7,12 @@ const NewChatButton = ({ open }: { open: boolean }) => {
   return (
     <Button
       className={cn(
-        'flex flex-row items-center justify-center gap-2 rounded-full',
+        'flex flex-row items-center justify-center gap-2 rounded-full text-neutral-800',
       )}
     >
-      <IconPlus stroke={2} size={16} />
+      <IconPlus stroke={2.4} size={16} />
       {open && (
-        <p className={cn('font-jost font-medium tracking-wider')}>
+        <p className={cn('font-jost font-semibold tracking-wider')}>
           Start new chat
         </p>
       )}
