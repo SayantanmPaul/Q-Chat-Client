@@ -1,5 +1,6 @@
 import React from 'react';
 import { PlaceholdersAndVanishTextarea } from '../ui/PlaceholdersAndVanishTextarea';
+import Image from 'next/image';
 
 const SearchPanel = () => {
   const placeholders = [
@@ -22,7 +23,8 @@ const SearchPanel = () => {
   };
 
   return (
-    <div className="min-h-[120px] p-4">
+    <div className="flex min-h-[120px] flex-col gap-8 p-4">
+      <Header />
       <PlaceholdersAndVanishTextarea
         placeholders={placeholders}
         onChange={handleChange}
@@ -33,3 +35,32 @@ const SearchPanel = () => {
 };
 
 export default SearchPanel;
+
+const Header = () => {
+  return (
+    <div className="flex flex-col items-center justify-center gap-3 select-none lg:gap-5">
+      <Logo />
+      <h2 className="font-briColage text-sm font-medium lg:text-lg lg:font-semibold dark:text-[#EFEFEF]">
+        Qurious about finance? Start here!
+      </h2>
+    </div>
+  );
+};
+
+const Logo = () => {
+  return (
+    <span className="relative z-20 flex items-center space-x-2">
+      <Image
+        src="../logo/Q.svg"
+        className="h-10 w-10 lg:h-12 lg:w-12"
+        width={60}
+        height={60}
+        alt="Q"
+        draggable={false}
+      />
+      <span className="font-briColage text-3xl font-medium whitespace-pre text-black lg:text-4xl dark:text-[#EFEFEF]">
+        chat
+      </span>
+    </span>
+  );
+};

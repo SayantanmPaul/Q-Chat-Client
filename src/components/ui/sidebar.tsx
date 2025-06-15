@@ -1,8 +1,9 @@
 'use client';
 import { cn } from '@/lib/utils';
-import React, { useState, createContext, useContext } from 'react';
+import { IconLayoutSidebarRightCollapseFilled } from '@tabler/icons-react';
 import { AnimatePresence, motion } from 'motion/react';
-import { IconMenu2, IconX } from '@tabler/icons-react';
+import React, { createContext, useContext, useState } from 'react';
+import { Button } from './button';
 
 interface Links {
   label: string;
@@ -114,16 +115,20 @@ export const MobileSidebar = ({
     <>
       <div
         className={cn(
-          'flex h-10 w-full flex-row items-center justify-between bg-neutral-100 px-4 py-4 md:hidden dark:bg-neutral-800',
+          'flex w-full flex-row items-center justify-between bg-neutral-100 md:hidden lg:h-10 lg:px-4 lg:py-4 dark:bg-neutral-800',
         )}
         {...props}
       >
-        <div className="z-20 flex w-full justify-end">
-          <IconMenu2
-            className="text-neutral-800 dark:text-neutral-200"
-            onClick={() => setOpen(!open)}
+        <Button
+          variant="ghost"
+          onClick={() => setOpen(!open)}
+          className="absolute top-5 left-4 z-20 text-neutral-200"
+        >
+          <IconLayoutSidebarRightCollapseFilled
+            size={20}
+            className="min-h-6 min-w-6 text-neutral-800 dark:text-neutral-200"
           />
-        </div>
+        </Button>
         <AnimatePresence>
           {open && (
             <motion.div
@@ -135,16 +140,10 @@ export const MobileSidebar = ({
                 ease: 'easeInOut',
               }}
               className={cn(
-                'fixed inset-0 z-[100] flex h-full w-full flex-col justify-between bg-white p-10 dark:bg-neutral-900',
+                'fixed inset-0 z-[100] flex h-full w-full max-w-80 flex-col justify-between bg-white p-4 dark:bg-neutral-900',
                 className,
               )}
             >
-              <div
-                className="absolute top-10 right-10 z-50 text-neutral-800 dark:text-neutral-200"
-                onClick={() => setOpen(!open)}
-              >
-                <IconX />
-              </div>
               {children}
             </motion.div>
           )}

@@ -1,14 +1,14 @@
 'use client';
 import ChatHistoryList from '@/components/chat-window/ChatHistoryList';
 import NewChatButton from '@/components/chat-window/NewChatButton';
+import { Button } from '@/components/ui/button';
 import { Sidebar, SidebarBody } from '@/components/ui/sidebar';
+import Dashboard from '@/components/view/ConversationView';
 import { cn } from '@/lib/utils';
+import { IconLayoutSidebarLeftCollapseFilled } from '@tabler/icons-react';
 import { AnimatePresence, motion } from 'motion/react';
 import Image from 'next/image';
 import { useState } from 'react';
-import { IconLayoutSidebarRightExpand } from '@tabler/icons-react';
-import { Button } from '@/components/ui/button';
-import Dashboard from '@/components/view/ConversationView';
 
 export default function Home() {
   const [open, setOpen] = useState(true);
@@ -16,10 +16,11 @@ export default function Home() {
   return (
     <div
       className={cn(
-        'mx-auto flex w-full flex-1 flex-col overflow-hidden rounded-md border border-neutral-200 bg-gray-100 md:flex-row dark:border-neutral-700 dark:bg-neutral-800',
+        'mx-auto flex w-full flex-1 flex-col overflow-hidden rounded-md border-neutral-200 bg-gray-100 md:flex-row dark:bg-neutral-800/50',
         'h-screen',
       )}
     >
+      <div className="pointer-events-none absolute inset-0 z-1 h-full w-full bg-[url(/images/Glow.svg)] bg-cover bg-no-repeat" />
       <Sidebar open={open} setOpen={setOpen}>
         <SidebarBody className="justify-between gap-10">
           <div className="flex flex-1 flex-col gap-8 overflow-x-hidden overflow-y-auto">
@@ -97,9 +98,14 @@ const CloseSidebarButton = ({
     <Button
       onClick={() => setOpen(!open)}
       variant="ghost"
-      className="hover:dark:bg-popover z-10 w-fit"
+      size={'icon'}
+      className="hover:dark:bg-popover z-10"
     >
-      <IconLayoutSidebarRightExpand stroke={2} size={25} />
+      <IconLayoutSidebarLeftCollapseFilled
+        stroke={2}
+        size={20}
+        className="min-h-6 min-w-6 text-neutral-200"
+      />
     </Button>
   );
 };

@@ -8,7 +8,6 @@ import {
 import { Button } from '../ui/button';
 import { IconChevronDown } from '@tabler/icons-react';
 import { cn } from '@/lib/utils';
-import { DropdownMenuArrow } from '@radix-ui/react-dropdown-menu';
 
 const modelData = [
   {
@@ -41,16 +40,22 @@ const ModelSelectionDropDown = () => {
       <DropdownMenuContent
         align="start"
         sideOffset={20}
-        className="flex w-sm flex-col gap-2 border border-zinc-700/60 p-2 text-gray-200"
+        className="flex w-80 max-w-sm flex-col gap-2 rounded-xl border border-neutral-700 p-2 text-gray-200 md:w-auto lg:w-auto dark:bg-neutral-900/60"
       >
-        <DropdownMenuArrow></DropdownMenuArrow>
         {modelData.map((model, _) => (
           <DropdownMenuItem
             key={_}
             onClick={() => setSelectedModel(model)}
-            className="flex flex-col items-start gap-2"
+            className={cn(
+              `flex flex-col items-start gap-2 rounded-lg hover:dark:bg-neutral-900/60 ${
+                selectdModel.name === model.name && 'dark:bg-neutral-900/80'
+              }`,
+            )}
           >
-            <p className="font-briColage text-sm font-medium">{model.name}</p>
+            <span className="flex items-center gap-2">
+              <p className="font-briColage text-sm font-medium">{model.name}</p>
+              {selectdModel.name === model.name && <ActivePing />}
+            </span>
             <p className="font-departureMono text-xs font-medium text-gray-400">
               {model.description}
             </p>
@@ -62,3 +67,12 @@ const ModelSelectionDropDown = () => {
 };
 
 export default ModelSelectionDropDown;
+
+const ActivePing = () => {
+  return (
+    <span className="relative flex size-2">
+      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
+      <span className="relative inline-flex size-2 rounded-full bg-green-500"></span>
+    </span>
+  );
+};
