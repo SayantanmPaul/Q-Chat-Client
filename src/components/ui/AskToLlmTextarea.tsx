@@ -1,7 +1,7 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-import { RabbitIcon } from 'lucide-react';
+import { ArrowUpIcon, LoaderCircleIcon } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import ModelSelectionDropDown from '../chat-window/ModelSelection';
@@ -19,14 +19,22 @@ interface NewData {
   color: string;
 }
 
-export function PlaceholdersAndVanishTextarea({
+export function AskToLlmTextarea({
   placeholders,
   onChange,
   onSubmit,
+  modelData,
+  isLoading,
+  selectedModel,
+  onModelChange,
 }: {
   placeholders: string[];
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  onSubmit: (value: string) => void;
+  modelData: { name: string; description: string }[];
+  isLoading?: boolean;
+  selectedModel: { name: string; description: string } | null;
+  onModelChange: (model: { name: string; description: string }) => void;
 }) {
   const [currentPlaceholder, setCurrentPlaceholder] = useState(0);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -178,20 +186,24 @@ export function PlaceholdersAndVanishTextarea({
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey && !animating) {
       e.preventDefault();
-      vanishAndSubmit();
+      const text = inputRef.current?.value || '';
+      if (text) {
+        onSubmit(text);
+        vanishAndSubmit();
+      }
     }
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     vanishAndSubmit();
-    onSubmit(e);
+    onSubmit(value);
   };
 
   return (
     <form
       className={cn(
-        'relative mx-auto flex w-full max-w-3xl flex-col gap-2 overflow-hidden rounded-2xl border-2 border-neutral-700 bg-white p-2 shadow-lg shadow-neutral-900 transition duration-200 focus:border-neutral-700 dark:bg-neutral-800',
+        'relative mx-auto flex w-full max-w-sm flex-col gap-2 overflow-hidden rounded-2xl border-2 border-neutral-700 bg-white p-2 shadow-lg shadow-neutral-900 transition duration-200 focus:border-neutral-700 md:max-w-xl lg:max-w-4xl dark:bg-[#452A7C1A]/90',
         value && 'bg-gray-50',
       )}
       onSubmit={handleSubmit}
@@ -212,7 +224,7 @@ export function PlaceholdersAndVanishTextarea({
           animating && 'text-transparent dark:text-transparent',
           'max-h-60 overflow-y-auto',
         )}
-        placeholder={undefined} // Remove native placeholder
+        placeholder={undefined}
       />
 
       <div className="pointer-events-none absolute inset-0 flex items-start pt-4 pl-4 sm:pl-5">
@@ -232,18 +244,30 @@ export function PlaceholdersAndVanishTextarea({
         </AnimatePresence>
       </div>
       <div className="flex w-full items-end justify-between">
-        <ModelSelectionDropDown />
-
+        <ModelSelectionDropDown
+          modelData={modelData}
+          isLoading={isLoading}
+          selectedModel={selectedModel}
+          onModelChange={onModelChange}
+        />
         <button
           disabled={!value}
           type="submit"
           className="bg-primary group dark:bg-primary hover:dark:bg-primary/80 flex h-10 w-10 cursor-pointer items-center justify-center overflow-visible rounded-lg transition duration-300 disabled:cursor-not-allowed disabled:bg-neutral-300 dark:disabled:bg-neutral-700"
         >
-          <RabbitIcon
-            strokeWidth={2}
-            size={22}
-            className="text-neutral-700 group-disabled:text-neutral-500"
-          />
+          {isLoading ? (
+            <LoaderCircleIcon
+              strokeWidth={2.5}
+              size={22}
+              className="animate-spin text-neutral-700 group-disabled:text-neutral-500"
+            />
+          ) : (
+            <ArrowUpIcon
+              strokeWidth={2.7}
+              size={22}
+              className="text-neutral-700 group-disabled:text-neutral-500"
+            />
+          )}
         </button>
       </div>
     </form>

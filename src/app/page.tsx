@@ -5,13 +5,15 @@ import { Button } from '@/components/ui/button';
 import { Sidebar, SidebarBody } from '@/components/ui/sidebar';
 import Dashboard from '@/components/view/ConversationView';
 import { cn } from '@/lib/utils';
+import { useQchatStore } from '@/store/qchatStore';
 import { IconLayoutSidebarLeftCollapseFilled } from '@tabler/icons-react';
-import { AnimatePresence, motion } from 'motion/react';
+import { AnimatePresence } from 'motion/react';
 import Image from 'next/image';
 import { useState } from 'react';
 
 export default function Home() {
   const [open, setOpen] = useState(true);
+  const { conversationList } = useQchatStore();
 
   return (
     <div
@@ -20,7 +22,9 @@ export default function Home() {
         'h-screen',
       )}
     >
-      <div className="pointer-events-none absolute inset-0 z-1 h-full w-full bg-[url(/images/Glow.svg)] bg-cover bg-no-repeat" />
+      {conversationList && conversationList.length < 1 && (
+        <div className="pointer-events-none absolute inset-0 z-1 h-full w-full bg-[url(/images/Glow.svg)] bg-cover bg-no-repeat" />
+      )}
       <Sidebar open={open} setOpen={setOpen}>
         <SidebarBody className="justify-between gap-10">
           <div className="flex flex-1 flex-col gap-8 overflow-x-hidden overflow-y-auto">
@@ -54,13 +58,9 @@ const Logo = () => {
         alt="Q"
         draggable={false}
       />
-      <motion.span
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="font-briColage text-3xl font-medium whitespace-pre text-black dark:text-white"
-      >
+      <span className="font-briColage text-3xl font-medium whitespace-pre text-black dark:text-white">
         chat
-      </motion.span>
+      </span>
     </a>
   );
 };
