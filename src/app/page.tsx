@@ -1,18 +1,18 @@
 'use client';
-import ChatHistoryList from '@/components/chat-window/ChatHistoryList';
-import NewChatButton from '@/components/chat-window/NewChatButton';
+// import ChatHistoryList from '@/components/chat-window/ChatHistoryList';
+// import NewChatButton from '@/components/chat-window/NewChatButton';
 import { Button } from '@/components/ui/button';
-import { Sidebar, SidebarBody } from '@/components/ui/sidebar';
+// import { Sidebar, SidebarBody } from '@/components/ui/sidebar';
 import Dashboard from '@/components/view/ConversationView';
 import { cn } from '@/lib/utils';
 import { useQchatStore } from '@/store/qchatStore';
 import { IconLayoutSidebarLeftCollapseFilled } from '@tabler/icons-react';
-import { AnimatePresence } from 'motion/react';
+// import { AnimatePresence } from 'motion/react';
 import Image from 'next/image';
-import { useState } from 'react';
+// import { useState } from 'react';
 
 export default function Home() {
-  const [open, setOpen] = useState(true);
+  // const [open, setOpen] = useState(true);
   const { conversationList } = useQchatStore();
 
   return (
@@ -25,7 +25,7 @@ export default function Home() {
       {conversationList && conversationList.length < 1 && (
         <div className="pointer-events-none absolute inset-0 z-1 h-full w-full bg-[url(/images/Glow.svg)] bg-cover bg-no-repeat" />
       )}
-      <Sidebar open={open} setOpen={setOpen}>
+      {/* <Sidebar open={open} setOpen={setOpen}>
         <SidebarBody className="justify-between gap-10">
           <div className="flex flex-1 flex-col gap-8 overflow-x-hidden overflow-y-auto">
             <div className="flex h-min flex-col gap-8 px-2">
@@ -38,12 +38,13 @@ export default function Home() {
             <AnimatePresence>{open && <ChatHistoryList />}</AnimatePresence>
           </div>
         </SidebarBody>
-      </Sidebar>
+      </Sidebar> */}
       <Dashboard />
     </div>
   );
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const Logo = () => {
   return (
     <a
@@ -65,6 +66,7 @@ const Logo = () => {
   );
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const LogoIcon = ({
   open,
   setOpen,
@@ -89,6 +91,7 @@ const LogoIcon = ({
   );
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const CloseSidebarButton = ({
   setOpen,
 }: {

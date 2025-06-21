@@ -266,13 +266,13 @@ export function TextEffect({
   };
 
   const markdownRenderer: Components = {
-    h1: h1 => <h1 className="text-2xl font-bold" {...h1} />,
-    h2: h2 => <h2 className="text-xl font-semibold" {...h2} />,
-    p: p => <p className="text-lg" {...p} />,
+    h1: h1 => <h1 className="text-xl font-bold lg:text-2xl" {...h1} />,
+    h2: h2 => <h2 className="text-lg font-semibold lg:text-xl" {...h2} />,
+    p: p => <p className="text-base lg:text-lg" {...p} />,
     code: code => (
       <code className="rounded bg-gray-200 p-1 dark:bg-gray-800" {...code} />
     ),
-    li: li => <li className="text-lg" {...li} />,
+    li: li => <li className="text-base lg:text-lg" {...li} />,
     pre: pre => (
       <pre
         className="my-2 overflow-x-auto rounded bg-gray-100 p-3 dark:bg-gray-900"

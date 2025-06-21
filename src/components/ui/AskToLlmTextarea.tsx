@@ -203,7 +203,7 @@ export function AskToLlmTextarea({
   return (
     <form
       className={cn(
-        'relative mx-auto flex w-full max-w-sm flex-col gap-2 overflow-hidden rounded-2xl border-2 border-neutral-700 bg-white p-2 shadow-lg shadow-neutral-900 transition duration-200 focus:border-neutral-700 md:max-w-xl lg:max-w-4xl dark:bg-[#452A7C1A]/90',
+        'relative mx-auto flex w-full max-w-sm flex-col gap-2 overflow-hidden rounded-2xl border-2 border-neutral-700/40 bg-white p-2 shadow-lg shadow-neutral-900 transition duration-200 focus:border-neutral-700 md:max-w-xl lg:max-w-4xl dark:bg-[#452A7C1A]/90',
         value && 'bg-gray-50',
       )}
       onSubmit={handleSubmit}
@@ -220,7 +220,7 @@ export function AskToLlmTextarea({
         value={value}
         rows={3}
         className={cn(
-          'relative z-50 my-2 field-sizing-content min-h-12 w-full resize-none bg-transparent px-2 text-sm text-black focus:ring-0 focus:outline-none sm:text-base dark:text-white',
+          'relative z-50 my-2 field-sizing-content min-h-12 w-full resize-none bg-transparent px-2 text-black focus:ring-0 focus:outline-none sm:text-base dark:text-white',
           animating && 'text-transparent dark:text-transparent',
           'max-h-60 overflow-y-auto',
         )}
@@ -236,7 +236,7 @@ export function AskToLlmTextarea({
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: -15, opacity: 0 }}
               transition={{ duration: 0.3, ease: 'linear' }}
-              className="truncate text-sm font-normal text-neutral-500 select-none sm:text-base dark:text-zinc-500"
+              className="truncate font-normal text-neutral-500 select-none sm:text-base dark:text-zinc-500"
             >
               {placeholders[currentPlaceholder]}
             </motion.p>

@@ -28,8 +28,9 @@ const ModelSelectionDropDown = ({
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
+          disabled={isLoading}
           className={cn(
-            `font-departureMono cursor-pointer gap-2 rounded-lg border border-zinc-700/60 text-xs text-gray-300 duration-300 ease-in-out select-none hover:dark:bg-zinc-900/80 ${open && 'dark:bg-zinc-900/80'}`,
+            `font-departureMono cursor-pointer gap-2 rounded-lg border border-neutral-700/40 text-xs text-gray-300 duration-300 ease-in-out select-none hover:dark:bg-zinc-900/80 ${open && 'dark:bg-zinc-900/80'}`,
           )}
         >
           {isLoading ? (
@@ -45,7 +46,7 @@ const ModelSelectionDropDown = ({
       <DropdownMenuContent
         align="start"
         sideOffset={20}
-        className="flex w-80 max-w-sm flex-col gap-2 rounded-xl border border-neutral-700 p-2 text-gray-200 backdrop-blur-md md:w-auto lg:w-auto dark:bg-neutral-900/60"
+        className="flex w-80 max-w-sm flex-col gap-2 rounded-xl border border-neutral-700/40 p-2 text-gray-200 backdrop-blur-md md:w-auto lg:w-auto dark:bg-neutral-900/60"
       >
         {modelData &&
           modelData.map((model, _) => (
@@ -54,8 +55,8 @@ const ModelSelectionDropDown = ({
               key={_}
               onClick={() => onModelChange(model)}
               className={cn(
-                `flex flex-col items-start gap-2 rounded-lg hover:dark:bg-neutral-900/60 ${
-                  selectedModel?.name === model.name && 'dark:bg-neutral-900/80'
+                `flex flex-col items-start gap-2 rounded-lg hover:dark:bg-neutral-800/40 ${
+                  selectedModel?.name === model.name && 'dark:bg-neutral-800/80'
                 }`,
               )}
             >

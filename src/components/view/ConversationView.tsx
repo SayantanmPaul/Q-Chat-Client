@@ -9,6 +9,7 @@ import { useEffect } from 'react';
 import { TextEffect } from '../motion-primitives/text-effect';
 import { TextShimmer } from '../motion-primitives/text-shimmer';
 import { AskToLlmTextarea } from '../ui/AskToLlmTextarea';
+import useChatScroll from '@/hooks/useChatScroll';
 
 const Dashboard = () => {
   const placeholders = [
@@ -27,6 +28,8 @@ const Dashboard = () => {
     setConversationList,
     setClearStore,
   } = useQchatStore();
+
+  const autoScrollRef = useChatScroll(conversationList);
 
   const {
     mutate,
@@ -73,45 +76,55 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="relative flex flex-1">
+    <div className="relative flex h-screen flex-1 bg-[#0D0D0D] dark:bg-[#0D0D0D]">
       <div
-        className={`flex h-full w-full flex-1 flex-col gap-4 border-l border-neutral-200 bg-[#0D0D0D] dark:border-neutral-700 dark:bg-[#0D0D0D] ${conversationList.length > 0 ? 'justify-end overflow-y-auto' : 'justify-center overflow-hidden'}`}
+        className={`flex h-full w-full flex-1 flex-col gap-4 border-neutral-200 lg:border-l dark:border-neutral-700 ${conversationList.length > 0 ? 'justify-end overflow-y-auto' : 'justify-center overflow-hidden'}`}
       >
         <div
-          className={`relative flex flex-col gap-0 p-1 pt-12 pb-8 ${conversationList.length > 0 ? 'h-full' : 'h-auto gap-8'}`}
+          className={`relative flex flex-col gap-0 pb-8 md:mx-0 lg:mx-0 ${conversationList.length > 0 ? 'h-full' : 'h-auto gap-8'}`}
         >
-          <div className="flex-1 overflow-y-auto">
+          <div
+            className="scrolling-touch max-h-[calc(100vh-96px)] flex-1 overflow-y-auto"
+            ref={autoScrollRef}
+          >
             {conversationList.length < 1 ? (
               <Header />
             ) : (
-              <div
-                className={`mx-auto flex w-full flex-col space-y-4 pb-8 md:max-w-[548px] lg:max-w-[860px]`}
-              >
-                {conversationList.map((msg, index) =>
-                  msg.role === 'user' ? (
-                    <div
-                      key={index}
-                      className={`flex w-full flex-col items-end`}
-                    >
-                      <ChatBubble prompt={msg.content} />
-                    </div>
-                  ) : (
-                    <div
-                      key={index}
-                      className={`flex w-full flex-col items-start`}
-                    >
-                      <ChatResponseBubble response={msg.content} />
-                    </div>
-                  ),
-                )}
-                {isLoadingResponse && (
-                  <div className="flex w-full flex-col items-start px-4">
-                    <ResponseLoader />
+              <>
+                <div className="sticky top-0 left-0 z-10">
+                  <div className="flex w-full items-center justify-center bg-[#0D0D0D] pt-4">
+                    <Logo imageClass="w-8 h-8" textClass="text-2xl" />
                   </div>
-                )}
-              </div>
+                  <div className="pointer-events-none h-12 w-full bg-gradient-to-b from-[#0D0D0D] to-transparent" />
+                </div>
+                <div
+                  className={`mx-auto flex w-full max-w-sm flex-col space-y-4 pb-8 md:max-w-[548px] lg:max-w-[860px]`}
+                >
+                  {conversationList.map((msg, index) =>
+                    msg.role === 'user' ? (
+                      <div
+                        key={index}
+                        className={`flex w-full flex-col items-end`}
+                      >
+                        <ChatBubble prompt={msg.content} />
+                      </div>
+                    ) : (
+                      <div
+                        key={index}
+                        className={`flex w-full flex-col items-start`}
+                      >
+                        <ChatResponseBubble response={msg.content} />
+                      </div>
+                    ),
+                  )}
+                  {isLoadingResponse && (
+                    <div className="flex w-full flex-col items-start px-4">
+                      <ResponseLoader />
+                    </div>
+                  )}
+                </div>
+              </>
             )}
-            {/* <div className="pointer-events-none absolute bottom-44 left-0 h-20 w-full bg-gradient-to-b from-transparent to-[#0D0D0D]" /> */}
           </div>
           <AskToLlmTextarea
             placeholders={placeholders}
@@ -164,7 +177,10 @@ const ChatResponseBubble = ({ response }: { response: string }) => {
 const Header = () => {
   return (
     <div className="flex flex-col items-center justify-center gap-3 select-none lg:gap-5">
-      <Logo />
+      <Logo
+        imageClass="lg:w-12 lg:h-12 w-10 h-10 pr-1"
+        textClass="lg:text-4xl text-3xl"
+      />
       <h2 className="font-briColage text-sm font-medium lg:text-lg lg:font-semibold dark:text-[#EFEFEF]">
         Qurious about finance? Start here!
       </h2>
@@ -172,18 +188,26 @@ const Header = () => {
   );
 };
 
-const Logo = () => {
+const Logo = ({
+  imageClass,
+  textClass,
+}: {
+  imageClass?: string;
+  textClass?: string;
+}) => {
   return (
-    <span className="relative z-20 flex items-center space-x-2">
+    <span className="relative z-20 flex items-center space-x-1">
       <Image
         src="../logo/Q.svg"
-        className="h-10 w-10 lg:h-12 lg:w-12"
+        className={imageClass}
         width={60}
         height={60}
         alt="Q"
         draggable={false}
       />
-      <span className="font-briColage text-3xl font-medium whitespace-pre text-black lg:text-4xl dark:text-[#EFEFEF]">
+      <span
+        className={`font-briColage font-medium whitespace-pre text-black dark:text-[#EFEFEF] ${textClass}`}
+      >
         chat
       </span>
     </span>
@@ -201,7 +225,7 @@ const Disclaimer = () => {
 const ResponseLoader = () => {
   return (
     <TextShimmer
-      className="font-departureMono text-sm font-medium tracking-tighter"
+      className="font-departureMono text-xs font-medium tracking-tighter lg:text-sm"
       duration={1}
     >
       Generating response...
