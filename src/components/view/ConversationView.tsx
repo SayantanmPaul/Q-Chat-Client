@@ -93,7 +93,13 @@ const Dashboard = () => {
               <>
                 <div className="sticky top-0 left-0 z-10">
                   <div className="flex w-full items-center justify-center bg-[#0D0D0D] pt-4">
-                    <Logo imageClass="w-8 h-8" textClass="text-2xl" />
+                    <Logo
+                      imageClass="w-8 h-8"
+                      textClass="text-2xl"
+                      onClick={() => {
+                        setClearStore();
+                      }}
+                    />
                   </div>
                   <div className="pointer-events-none h-12 w-full bg-gradient-to-b from-[#0D0D0D] to-transparent" />
                 </div>
@@ -191,12 +197,17 @@ const Header = () => {
 const Logo = ({
   imageClass,
   textClass,
+  onClick,
 }: {
   imageClass?: string;
   textClass?: string;
+  onClick?: () => void;
 }) => {
   return (
-    <span className="relative z-20 flex items-center space-x-1">
+    <span
+      className="relative z-20 flex cursor-pointer items-center space-x-1"
+      onClick={onClick}
+    >
       <Image
         src="../logo/Q.svg"
         className={imageClass}
