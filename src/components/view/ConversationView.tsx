@@ -1,4 +1,5 @@
 'use client';
+import useChatScroll from '@/hooks/useChatScroll';
 import {
   useGetModelNames,
   useGetResponseFromModel,
@@ -9,7 +10,6 @@ import { useEffect } from 'react';
 import { TextEffect } from '../motion-primitives/text-effect';
 import { TextShimmer } from '../motion-primitives/text-shimmer';
 import { AskToLlmTextarea } from '../ui/AskToLlmTextarea';
-import useChatScroll from '@/hooks/useChatScroll';
 
 const Dashboard = () => {
   const placeholders = [
@@ -76,22 +76,22 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="relative flex h-screen flex-1 bg-[#0D0D0D] dark:bg-[#0D0D0D]">
+    <div className="relative flex h-screen max-h-[calc(100vh-0px)] flex-1 bg-[#0D0D0D] px-4 md:max-h-full lg:max-h-full lg:px-0 dark:bg-[#0D0D0D]">
       <div
-        className={`flex h-full w-full flex-1 flex-col gap-4 border-neutral-200 lg:border-l dark:border-neutral-700 ${conversationList.length > 0 ? 'justify-end overflow-y-auto' : 'justify-center overflow-hidden'}`}
+        className={`flex h-full w-full flex-1 flex-col gap-4 overflow-y-auto ${conversationList.length > 0 ? 'justify-end' : 'justify-center'}`}
       >
         <div
           className={`relative flex flex-col gap-0 pb-8 md:mx-0 lg:mx-0 ${conversationList.length > 0 ? 'h-full' : 'h-auto gap-8'}`}
         >
           <div
-            className="scrolling-touch max-h-[calc(100vh-96px)] flex-1 overflow-y-auto"
+            className="scrolling-touch flex-1 overflow-y-auto md:max-h-full lg:max-h-full"
             ref={autoScrollRef}
           >
             {conversationList.length < 1 ? (
               <Header />
             ) : (
               <>
-                <div className="sticky top-0 left-0 z-10">
+                <div className="sticky top-0 left-0 z-20">
                   <div className="flex w-full items-center justify-center bg-[#0D0D0D] pt-4">
                     <Logo
                       imageClass="w-8 h-8"

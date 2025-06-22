@@ -63,6 +63,23 @@ export function AskToLlmTextarea({
     };
   }, [placeholders]);
 
+  useEffect(() => {
+    const input = inputRef.current;
+    if (!input) return;
+
+    const handleFocus = () => {
+      setTimeout(() => {
+        input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 300);
+    };
+
+    input.addEventListener('focus', handleFocus);
+
+    return () => {
+      input.removeEventListener('focus', handleFocus);
+    };
+  }, []);
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const newDataRef = useRef<NewData[]>([]);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -186,6 +203,7 @@ export function AskToLlmTextarea({
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey && !animating) {
       e.preventDefault();
+      (e.target as HTMLTextAreaElement).blur();
       const text = inputRef.current?.value || '';
       if (text) {
         onSubmit(text);
