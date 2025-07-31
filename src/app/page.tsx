@@ -2,15 +2,42 @@
 // import ChatHistoryList from '@/components/chat-window/ChatHistoryList';
 // import NewChatButton from '@/components/chat-window/NewChatButton';
 // import { Sidebar, SidebarBody } from '@/components/ui/sidebar';
-import Dashboard from '@/components/view/ConversationView';
+import ConversationView from '@/components/view/ConversationView';
 import { cn } from '@/lib/utils';
-import { useQchatStore } from '@/store/qchatStore';
+import { useEffect } from 'react';
+import { toast } from 'sonner';
+import { checkServerStatus } from '../../api/axios';
+// import { useQchatStore } from '@/store/qchatStore';
 // import { AnimatePresence } from 'motion/react';
 // import { useState } from 'react';
 
 export default function Home() {
   // const [open, setOpen] = useState(true);
-  const { conversationList } = useQchatStore();
+  // const { conversationList } = useQchatStore();
+
+  // checks the server status by pinging the health endpoint.
+  useEffect(() => {
+    const apiUrl = process.env.NEXT_PUBLIC_BASE_URL || '';
+    checkServerStatus({ apiUrl }).then(isHealthy => {
+      if (!isHealthy) {
+        toast.error('Something went wrong', {
+          description: () => (
+            <p>
+              Please check your connection or try again shortly. Reach us to
+              report the issue{' '}
+              <a href="mailto:quantaaofficial@gmail.com" className="underline">
+                quantaaofficial@gmail.com
+              </a>
+            </p>
+          ),
+          duration: 10000,
+          richColors: true,
+        });
+      } else {
+        console.log('Server is healthy');
+      }
+    });
+  }, []);
 
   return (
     <div
@@ -19,9 +46,9 @@ export default function Home() {
         'h-screen',
       )}
     >
-      {conversationList && conversationList.length < 1 && (
-        <div className="pointer-events-none absolute inset-0 z-1 h-full w-full bg-[url(/images/Glow.svg)] bg-cover bg-no-repeat" />
-      )}
+      {/* {conversationList && conversationList.length < 1 && ( */}
+      <div className="pointer-events-none absolute inset-0 z-1 h-full w-full bg-[url(/images/Glow.svg)] bg-cover bg-no-repeat" />
+      {/* )} */}
       {/* <Sidebar open={open} setOpen={setOpen}>
         <SidebarBody className="justify-between gap-10">
           <div className="flex flex-1 flex-col gap-8 overflow-x-hidden overflow-y-auto">
@@ -36,7 +63,7 @@ export default function Home() {
           </div>
         </SidebarBody>
       </Sidebar> */}
-      <Dashboard />
+      <ConversationView />
     </div>
   );
 }

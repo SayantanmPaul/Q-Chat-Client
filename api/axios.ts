@@ -10,21 +10,25 @@ const axiosInstance: AxiosInstance = axios.create({
     'Content-Type': 'application/json',
     Accept: 'application/json',
   },
-  timeout: 10000, // 10 seconds
+  timeout: 5000, // 5 seconds
   withCredentials: true,
 });
 
-if (isDevMode) {
-  axios
-    .get(process.env.NEXT_PUBLIC_BASE_URL + '/sys/health')
-    .then(res => {
-      if (res.status === 200) {
-        console.log(res.data);
-      }
-    })
-    .catch(error => {
-      console.error('Error pinging backend:', error);
+export async function checkServerStatus({
+  apiUrl,
+}: {
+  apiUrl: string;
+}): Promise<boolean> {
+  try {
+    const res = await fetch(apiUrl + '/sys/health', {
+      method: 'GET',
+      cache: 'no-store',
     });
+    return res.ok;
+  } catch (e) {
+    console.error(e);
+    return false;
+  }
 }
 
 export default axiosInstance;

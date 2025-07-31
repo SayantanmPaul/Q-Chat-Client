@@ -11,7 +11,7 @@ import { TextEffect } from '../motion-primitives/text-effect';
 import { TextShimmer } from '../motion-primitives/text-shimmer';
 import { AskToLlmTextarea } from '../ui/AskToLlmTextarea';
 
-const Dashboard = () => {
+const ConversationView = () => {
   const placeholders = [
     'What is a mutual fund?',
     'How do I start investing with ₹500?',
@@ -31,7 +31,7 @@ const Dashboard = () => {
 
   const autoScrollRef = useChatScroll(conversationList);
 
-  const {
+  const { 
     mutate,
     isPending: isLoadingResponse,
     // data: responseData,
@@ -150,7 +150,7 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default ConversationView;
 
 const ChatBubble = ({ prompt }: { prompt: string }) => {
   return (

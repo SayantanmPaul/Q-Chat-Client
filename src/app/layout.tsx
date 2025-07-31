@@ -6,6 +6,7 @@ import './globals.css';
 import QueryProvider from '@/lib/QueryProvider';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import Head from 'next/head';
+import { Toaster } from '@/components/ui/sonner';
 
 export const metadata: Metadata = {
   title:
@@ -45,6 +46,7 @@ export default function RootLayout({
             )}
           >
             {children}
+            <Toaster />
             <ReactQueryDevtools initialIsOpen={false} />
           </body>
           <Analytics />
