@@ -18,25 +18,33 @@ export default function Home() {
   // checks the server status by pinging the health endpoint.
   useEffect(() => {
     const apiUrl = process.env.NEXT_PUBLIC_BASE_URL || '';
-    checkServerStatus({ apiUrl }).then(isHealthy => {
-      if (!isHealthy) {
-        toast.error('Something went wrong', {
-          description: () => (
-            <p>
-              Please check your connection or try again shortly. Reach us to
-              report the issue{' '}
-              <a href="mailto:quantaaofficial@gmail.com" className="underline">
-                quantaaofficial@gmail.com
-              </a>
-            </p>
-          ),
-          duration: 10000,
-          richColors: true,
-        });
-      } else {
-        console.log('Server is healthy');
-      }
-    });
+
+    const checkStatus = () => {
+      checkServerStatus({ apiUrl }).then(isHealthy => {
+        if (!isHealthy) {
+          toast.error('Something went wrong', {
+            description: () => (
+              <p>
+                Please check your connection or try again shortly. Reach us to
+                report the issue{' '}
+                <a
+                  href="mailto:quantaaofficial@gmail.com"
+                  className="underline"
+                >
+                  quantaaofficial@gmail.com
+                </a>
+              </p>
+            ),
+            duration: 10000,
+            richColors: true,
+          });
+        } else {
+          console.log('Server is healthy');
+        }
+      });
+    };
+
+    checkStatus();
   }, []);
 
   return (

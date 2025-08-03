@@ -1,17 +1,23 @@
 'use client';
 import useChatScroll from '@/hooks/useChatScroll';
-import {
-  useGetModelNames,
-  useGetResponseFromModel,
-} from '@/lib/queries/chat.queries';
 import { useQchatStore } from '@/store/qchatStore';
 import Image from 'next/image';
-import { useEffect } from 'react';
-import { TextEffect } from '../motion-primitives/text-effect';
-import { TextShimmer } from '../motion-primitives/text-shimmer';
+import { useEffect, useState } from 'react';
 import { AskToLlmTextarea } from '../ui/AskToLlmTextarea';
+import { useChatStream } from '@/hooks/useChatStream';
+import { Message } from '@/types/message-type';
+import MessageArea from '../chat-window/MessageArea';
 
 const ConversationView = () => {
+  const [messages, setMessages] = useState<Message[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [currentMessage, setCurrentMessage] = useState('');
+  const [checkpointId, setCheckpointId] = useState<string | null>(null);
+
+  const { startStream } = useChatStream({
+    baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}/chat-stream` || '',
+  });
+
   const placeholders = [
     'What is a mutual fund?',
     'How do I start investing with ₹500?',
@@ -20,74 +26,73 @@ const ConversationView = () => {
     'Are mutual funds safe?',
   ];
 
-  const { data, isLoading } = useGetModelNames();
+  // const { data, isLoading } = useGetModelNames();
   const {
-    conversationList,
     selectedModel,
     setSelectedModel,
-    setConversationList,
+    // setConversationList,
     setClearStore,
+    isLoading,
   } = useQchatStore();
 
-  const autoScrollRef = useChatScroll(conversationList);
-
-  const { 
-    mutate,
-    isPending: isLoadingResponse,
-    // data: responseData,
-  } = useGetResponseFromModel();
-
-  useEffect(() => {
-    if (data?.data?.llmModels?.length > 0 && !selectedModel) {
-      setSelectedModel(data.data.llmModels[0]);
-    }
-  }, [data, selectedModel, setSelectedModel]);
+  const autoScrollRef = useChatScroll(messages);
 
   useEffect(() => {
     setClearStore();
   }, [setClearStore]);
 
   const onSubmit = (value: string) => {
-    setConversationList([
-      ...conversationList,
+    if (!value.trim()) return;
+
+    const newMessageId =
+      messages.length > 0 ? Math.max(...messages.map(msg => msg.id)) + 1 : 1;
+
+    setMessages(prev => [
+      ...prev,
       {
-        role: 'user',
+        id: newMessageId,
         content: value,
+        isUser: true,
+        type: 'message',
       },
     ]);
-    mutate(
+    setCurrentMessage('');
+
+    const aiResponseId = newMessageId + 1;
+    setMessages(prev => [
+      ...prev,
       {
-        selectedModel: selectedModel?.name || '',
-        message: value,
+        id: aiResponseId,
+        content: '',
+        isUser: false,
+        type: 'message',
+        isLoading: true,
+        searchInfo: { stages: [], query: '', urls: [] },
       },
-      {
-        onSuccess: ({ data }) => {
-          setConversationList([
-            ...conversationList,
-            { role: 'user', content: value },
-            { role: 'assistant', content: data.response },
-          ]);
-        },
-        onError: error => {
-          console.error('Error fetching response:', error);
-        },
-      },
-    );
+    ]);
+
+    startStream({
+      userInput: value,
+      checkpointId,
+      aiResponseId,
+      updateMessage: setMessages,
+      setCheckpointId,
+    });
   };
 
   return (
     <div className="relative flex h-screen max-h-[calc(100vh-0px)] flex-1 bg-[#0D0D0D] px-4 md:max-h-full lg:max-h-full lg:px-0 dark:bg-[#0D0D0D]">
       <div
-        className={`flex h-full w-full flex-1 flex-col gap-4 overflow-y-auto ${conversationList.length > 0 ? 'justify-end' : 'justify-center'}`}
+        className={`flex h-full w-full flex-1 flex-col gap-4 overflow-y-auto ${messages.length > 0 ? 'justify-end' : 'justify-center'}`}
       >
         <div
-          className={`relative flex flex-col gap-0 pb-8 md:mx-0 lg:mx-0 ${conversationList.length > 0 ? 'h-full' : 'h-auto gap-8'}`}
+          className={`relative flex flex-col gap-0 pb-8 md:mx-0 lg:mx-0 ${messages.length > 0 ? 'h-full' : 'h-auto gap-8'}`}
         >
           <div
-            className="scrolling-touch flex-1 overflow-y-auto md:max-h-full lg:max-h-full"
+            className="scrolling-touch flex-1 overflow-y-auto"
             ref={autoScrollRef}
           >
-            {conversationList.length < 1 ? (
+            {messages.length < 1 ? (
               <Header />
             ) : (
               <>
@@ -106,37 +111,18 @@ const ConversationView = () => {
                 <div
                   className={`mx-auto flex w-full max-w-sm flex-col space-y-4 pb-8 md:max-w-[548px] lg:max-w-[860px]`}
                 >
-                  {conversationList.map((msg, index) =>
-                    msg.role === 'user' ? (
-                      <div
-                        key={index}
-                        className={`flex w-full flex-col items-end`}
-                      >
-                        <ChatBubble prompt={msg.content} />
-                      </div>
-                    ) : (
-                      <div
-                        key={index}
-                        className={`flex w-full flex-col items-start`}
-                      >
-                        <ChatResponseBubble response={msg.content} />
-                      </div>
-                    ),
-                  )}
-                  {isLoadingResponse && (
-                    <div className="flex w-full flex-col items-start px-4">
-                      <ResponseLoader />
-                    </div>
-                  )}
+                  <MessageArea messages={messages} />
                 </div>
               </>
             )}
           </div>
           <AskToLlmTextarea
             placeholders={placeholders}
-            onChange={() => {}}
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+              setCurrentMessage(e.target.value)
+            }
             onSubmit={onSubmit}
-            modelData={data?.data?.llmModels}
+            // modelData={data?.data?.llmModels}
             isLoading={isLoading}
             selectedModel={selectedModel}
             onModelChange={setSelectedModel}
@@ -151,34 +137,6 @@ const ConversationView = () => {
 };
 
 export default ConversationView;
-
-const ChatBubble = ({ prompt }: { prompt: string }) => {
-  return (
-    <div className="flex w-fit max-w-3xl items-start gap-2 rounded-xl border-2 p-4 font-medium dark:border-neutral-700/10 dark:bg-[#121212]">
-      <p className="leading-4 font-medium whitespace-pre-wrap text-neutral-200">
-        {prompt}
-      </p>
-    </div>
-  );
-};
-
-const ChatResponseBubble = ({ response }: { response: string }) => {
-  return (
-    <div className="flex w-fit max-w-3xl items-start gap-2 rounded-xl border-2 p-4 font-medium dark:border-neutral-700/10 dark:bg-[#121212]">
-      <div className="prose prose-neutral dark:prose-invert font-medium whitespace-pre-wrap">
-        {/* <MarkDown content={response} /> */}
-        <TextEffect
-          className="text-neutral-200"
-          per="word"
-          preset="fade"
-          markdown={true}
-        >
-          {response}
-        </TextEffect>
-      </div>
-    </div>
-  );
-};
 
 const Header = () => {
   return (
@@ -230,16 +188,5 @@ const Disclaimer = () => {
     <p className="font-departureMono w-full text-xs font-medium tracking-tighter text-nowrap text-neutral-400">
       AI-generated, for reference only.
     </p>
-  );
-};
-
-const ResponseLoader = () => {
-  return (
-    <TextShimmer
-      className="font-departureMono text-xs font-medium tracking-tighter lg:text-sm"
-      duration={1}
-    >
-      Generating response...
-    </TextShimmer>
   );
 };

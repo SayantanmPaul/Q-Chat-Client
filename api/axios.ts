@@ -20,7 +20,7 @@ export async function checkServerStatus({
   apiUrl: string;
 }): Promise<boolean> {
   try {
-    const res = await fetch(apiUrl + '/sys/health', {
+    const res = await fetch(apiUrl + '/health', {
       method: 'GET',
       cache: 'no-store',
     });

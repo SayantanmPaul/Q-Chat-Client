@@ -16,7 +16,7 @@ const ModelSelectionDropDown = ({
   selectedModel,
   onModelChange,
 }: {
-  modelData: { name: string; description: string }[];
+  modelData?: { name: string; description: string }[] | null;
   isLoading?: boolean;
   selectedModel: { name: string; description: string } | null;
   onModelChange: (model: { name: string; description: string }) => void;
@@ -44,7 +44,7 @@ const ModelSelectionDropDown = ({
             </>
           ) : (
             <span className="font-briColage text-sm font-medium">
-              Service unavailable
+              Model selection unavailable
             </span>
           )}
         </Button>
