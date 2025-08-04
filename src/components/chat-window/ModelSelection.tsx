@@ -16,10 +16,10 @@ const ModelSelectionDropDown = ({
   selectedModel,
   onModelChange,
 }: {
-  modelData: { name: string; description: string }[];
+  modelData?: { name: string; description?: string }[] | null;
   isLoading?: boolean;
-  selectedModel: { name: string; description: string } | null;
-  onModelChange: (model: { name: string; description: string }) => void;
+  selectedModel: { name: string; description?: string } | null;
+  onModelChange: (model: { name: string; description?: string }) => void;
 }) => {
   const [open, setOpen] = React.useState(false);
 
@@ -30,26 +30,34 @@ const ModelSelectionDropDown = ({
           variant="ghost"
           disabled={isLoading}
           className={cn(
-            `font-departureMono cursor-pointer gap-2 rounded-lg border border-neutral-700/40 text-xs text-gray-300 duration-300 ease-in-out select-none hover:dark:bg-zinc-900/80 ${open && 'dark:bg-zinc-900/80'}`,
+            `font-departureMono gap-2 rounded-lg border border-neutral-700/40 text-xs duration-300 ease-in-out select-none hover:dark:bg-zinc-900/80 ${open && 'dark:bg-zinc-900/80'} ${!isLoading && !modelData ? 'cursor-not-allowed text-gray-500 hover:text-gray-500' : 'cursor-pointer text-gray-300'}`,
           )}
         >
           {isLoading ? (
             <Skeleton className="h-4 w-24" />
+          ) : selectedModel ? (
+            <>
+              <span className="font-briColage text-sm font-medium">
+                {selectedModel.name}
+              </span>
+              {modelData && modelData.length > 0 && (
+                <IconChevronDown stroke={2} className="h-4 w-4" />
+              )}
+            </>
           ) : (
             <span className="font-briColage text-sm font-medium">
-              {selectedModel?.name}
+              Model selection unavailable
             </span>
           )}
-          <IconChevronDown stroke={2} className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent
-        align="start"
-        sideOffset={20}
-        className="flex w-80 max-w-sm flex-col gap-2 rounded-xl border border-neutral-700/40 p-2 text-gray-200 backdrop-blur-md md:w-auto lg:w-auto dark:bg-neutral-900/60"
-      >
-        {modelData &&
-          modelData.map((model, _) => (
+      {modelData && modelData.length > 0 && (
+        <DropdownMenuContent
+          align="start"
+          sideOffset={20}
+          className="flex w-80 max-w-sm flex-col gap-2 rounded-xl border border-neutral-700/40 p-2 text-gray-200 backdrop-blur-md md:w-auto lg:w-auto dark:bg-neutral-900/60"
+        >
+          {modelData.map((model, _) => (
             <DropdownMenuItem
               disabled={isLoading}
               key={_}
@@ -71,7 +79,8 @@ const ModelSelectionDropDown = ({
               </p>
             </DropdownMenuItem>
           ))}
-      </DropdownMenuContent>
+        </DropdownMenuContent>
+      )}
     </DropdownMenu>
   );
 };

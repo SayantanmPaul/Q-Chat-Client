@@ -10,6 +10,15 @@ export const getModelNames = async () => {
   }
 };
 
+export const getCurrentModel = async () => {
+  try {
+    const response = await axiosInstance.get('/getModelName');
+    return response.data;
+  } catch (error) {
+    throw new Error(`Failed to fetch data: ${error}`);
+  }
+};
+
 // get response from the llm
 export const getResponseFromModel = async ({
   selectedModel,

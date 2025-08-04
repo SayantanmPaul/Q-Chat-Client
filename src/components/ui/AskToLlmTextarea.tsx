@@ -5,6 +5,7 @@ import { ArrowUpIcon, LoaderCircleIcon } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import ModelSelectionDropDown from '../chat-window/ModelSelection';
+import { useQchatStore } from '@/store/qchatStore';
 
 interface PixelData {
   x: number;
@@ -19,25 +20,28 @@ interface NewData {
   color: string;
 }
 
+interface TextAreaProps {
+  placeholders: string[];
+  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  onSubmit: (value: string) => void;
+  // modelData: { name: string; description: string }[];
+  isLoading?: boolean;
+  currentModel: { name: string; description?: string } | null;
+  onModelChange: (model: { name: string; description?: string }) => void;
+}
+
 export function AskToLlmTextarea({
   placeholders,
   onChange,
   onSubmit,
-  modelData,
+  // modelData,
   isLoading,
-  selectedModel,
   onModelChange,
-}: {
-  placeholders: string[];
-  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  onSubmit: (value: string) => void;
-  modelData: { name: string; description: string }[];
-  isLoading?: boolean;
-  selectedModel: { name: string; description: string } | null;
-  onModelChange: (model: { name: string; description: string }) => void;
-}) {
+}: TextAreaProps) {
   const [currentPlaceholder, setCurrentPlaceholder] = useState(0);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  const { selectedModel } = useQchatStore();
 
   useEffect(() => {
     const startAnimation = () => {
@@ -187,6 +191,7 @@ export function AskToLlmTextarea({
     animateFrame(start);
   };
 
+  // Vanish and submit
   const vanishAndSubmit = () => {
     setAnimating(true);
     draw();
@@ -200,6 +205,7 @@ export function AskToLlmTextarea({
     }
   };
 
+  // Handle textarea keydown
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey && !animating) {
       e.preventDefault();
@@ -212,11 +218,19 @@ export function AskToLlmTextarea({
     }
   };
 
+  // Handle form submission
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     vanishAndSubmit();
     onSubmit(value);
   };
+
+  // Focus the textarea when not loading
+  useEffect(() => {
+    if (!isLoading && inputRef.current) {
+      inputRef.current?.focus();
+    }
+  }, [isLoading]);
 
   return (
     <form
@@ -263,8 +277,7 @@ export function AskToLlmTextarea({
       </div>
       <div className="flex w-full items-end justify-between">
         <ModelSelectionDropDown
-          modelData={modelData}
-          isLoading={isLoading}
+          // modelData={modelData}
           selectedModel={selectedModel}
           onModelChange={onModelChange}
         />
