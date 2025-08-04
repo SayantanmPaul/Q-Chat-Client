@@ -52,12 +52,13 @@ export const metadata: Metadata = {
     site: '@teamquantaa',
   },
   appleWebApp: {
-    title: 'CVCompass: AI-Powered Resume Review for Hiring Teams & Job Seekers',
+    title:
+      'Qchat(Beta): Your AI-Powered guide to Mutual Funds, FDs, and Tax Saving',
     startupImage: [
       'https://ik.imagekit.io/hmeujbosa/QBanner.png?updatedAt=1754347327241',
     ],
   },
-  category: 'productivity',
+  category: 'technology',
   authors: [
     { name: 'Team Quantaa', url: 'https://www.quantaa.club' },
     { name: 'Sayantan Paul', url: 'https://www.sayantanpaul.com' },
