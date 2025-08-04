@@ -16,10 +16,10 @@ const ModelSelectionDropDown = ({
   selectedModel,
   onModelChange,
 }: {
-  modelData?: { name: string; description: string }[] | null;
+  modelData?: { name: string; description?: string }[] | null;
   isLoading?: boolean;
-  selectedModel: { name: string; description: string } | null;
-  onModelChange: (model: { name: string; description: string }) => void;
+  selectedModel: { name: string; description?: string } | null;
+  onModelChange: (model: { name: string; description?: string }) => void;
 }) => {
   const [open, setOpen] = React.useState(false);
 
@@ -30,7 +30,7 @@ const ModelSelectionDropDown = ({
           variant="ghost"
           disabled={isLoading}
           className={cn(
-            `font-departureMono gap-2 rounded-lg border border-neutral-700/40 text-xs duration-300 ease-in-out select-none hover:dark:bg-zinc-900/80 ${open && 'dark:bg-zinc-900/80'} ${!isLoading && !selectedModel ? 'cursor-not-allowed text-gray-500 hover:text-gray-500' : 'cursor-pointer text-gray-300'}`,
+            `font-departureMono gap-2 rounded-lg border border-neutral-700/40 text-xs duration-300 ease-in-out select-none hover:dark:bg-zinc-900/80 ${open && 'dark:bg-zinc-900/80'} ${!isLoading && !modelData ? 'cursor-not-allowed text-gray-500 hover:text-gray-500' : 'cursor-pointer text-gray-300'}`,
           )}
         >
           {isLoading ? (
@@ -40,7 +40,9 @@ const ModelSelectionDropDown = ({
               <span className="font-briColage text-sm font-medium">
                 {selectedModel.name}
               </span>
-              <IconChevronDown stroke={2} className="h-4 w-4" />
+              {modelData && modelData.length > 0 && (
+                <IconChevronDown stroke={2} className="h-4 w-4" />
+              )}
             </>
           ) : (
             <span className="font-briColage text-sm font-medium">

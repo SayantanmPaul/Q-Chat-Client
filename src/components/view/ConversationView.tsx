@@ -7,26 +7,21 @@ import { AskToLlmTextarea } from '../ui/AskToLlmTextarea';
 import { useChatStream } from '@/hooks/useChatStream';
 import { Message } from '@/types/message-type';
 import MessageArea from '../chat-window/MessageArea';
+import { useGetCurrentModel } from '@/lib/queries/chat.queries';
 
 const ConversationView = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [currentMessage, setCurrentMessage] = useState('');
   const [checkpointId, setCheckpointId] = useState<string | null>(null);
+  const autoScrollRef = useChatScroll(messages);
 
   const { startStream } = useChatStream({
     baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}/chat-stream` || '',
   });
 
-  const placeholders = [
-    'What is a mutual fund?',
-    'How do I start investing with ₹500?',
-    'What’s the difference between SIP and lumpsum?',
-    'Is it better to invest in FD or mutual funds?',
-    'Are mutual funds safe?',
-  ];
+  const { data: currentModel } = useGetCurrentModel();
 
-  // const { data, isLoading } = useGetModelNames();
   const {
     selectedModel,
     setSelectedModel,
@@ -35,7 +30,11 @@ const ConversationView = () => {
     isLoading,
   } = useQchatStore();
 
-  const autoScrollRef = useChatScroll(messages);
+  useEffect(() => {
+    if (currentModel) {
+      setSelectedModel(currentModel);
+    }
+  }, [currentModel, setSelectedModel]);
 
   useEffect(() => {
     setClearStore();
@@ -79,6 +78,14 @@ const ConversationView = () => {
       setCheckpointId,
     });
   };
+
+  const placeholders = [
+    'What is a mutual fund?',
+    'How do I start investing with ₹500?',
+    'What’s the difference between SIP and lumpsum?',
+    'Is it better to invest in FD or mutual funds?',
+    'Are mutual funds safe?',
+  ];
 
   return (
     <div className="relative flex h-screen max-h-[calc(100vh-0px)] flex-1 bg-[#0D0D0D] px-4 md:max-h-full lg:max-h-full lg:px-0 dark:bg-[#0D0D0D]">
@@ -124,7 +131,7 @@ const ConversationView = () => {
             onSubmit={onSubmit}
             // modelData={data?.data?.llmModels}
             isLoading={isLoading}
-            selectedModel={selectedModel}
+            currentModel={selectedModel}
             onModelChange={setSelectedModel}
           />
         </div>

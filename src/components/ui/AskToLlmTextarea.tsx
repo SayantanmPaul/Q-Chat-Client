@@ -5,6 +5,7 @@ import { ArrowUpIcon, LoaderCircleIcon } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import ModelSelectionDropDown from '../chat-window/ModelSelection';
+import { useQchatStore } from '@/store/qchatStore';
 
 interface PixelData {
   x: number;
@@ -25,8 +26,8 @@ interface TextAreaProps {
   onSubmit: (value: string) => void;
   // modelData: { name: string; description: string }[];
   isLoading?: boolean;
-  selectedModel: { name: string; description: string } | null;
-  onModelChange: (model: { name: string; description: string }) => void;
+  currentModel: { name: string; description?: string } | null;
+  onModelChange: (model: { name: string; description?: string }) => void;
 }
 
 export function AskToLlmTextarea({
@@ -35,11 +36,12 @@ export function AskToLlmTextarea({
   onSubmit,
   // modelData,
   isLoading,
-  selectedModel,
   onModelChange,
 }: TextAreaProps) {
   const [currentPlaceholder, setCurrentPlaceholder] = useState(0);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  const { selectedModel } = useQchatStore();
 
   useEffect(() => {
     const startAnimation = () => {
@@ -276,7 +278,6 @@ export function AskToLlmTextarea({
       <div className="flex w-full items-end justify-between">
         <ModelSelectionDropDown
           // modelData={modelData}
-          isLoading={isLoading}
           selectedModel={selectedModel}
           onModelChange={onModelChange}
         />
