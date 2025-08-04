@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     description:
       'Try Qchat! Get clear, reliable answers on mutual funds, tax-saving, FDs, debt funds, and more',
     images: [
-      'https://github-production-user-asset-6210df.s3.amazonaws.com/103353878/474225409-814c2cc2-6976-456d-aad2-663477e70d3e.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250804T215248Z&X-Amz-Expires=300&X-Amz-Signature=38a9733f9e4e7edeb73c8c6b25a6dfc16be97c6c3438d086b6bdf3bf54b23754&X-Amz-SignedHeaders=host',
+      'https://ik.imagekit.io/hmeujbosa/QBanner.png?updatedAt=1754347327241',
     ],
     url: 'https://chat.quantaa.club',
   },
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     description:
       'Try Qchat! Get clear, reliable answers on mutual funds, tax-saving, FDs, debt funds, and more',
     images: [
-      'https://github-production-user-asset-6210df.s3.amazonaws.com/103353878/474225409-814c2cc2-6976-456d-aad2-663477e70d3e.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250804T215248Z&X-Amz-Expires=300&X-Amz-Signature=38a9733f9e4e7edeb73c8c6b25a6dfc16be97c6c3438d086b6bdf3bf54b23754&X-Amz-SignedHeaders=host',
+      'https://ik.imagekit.io/hmeujbosa/QBanner.png?updatedAt=1754347327241',
     ],
     card: 'summary_large_image',
     creator: '@sayantanpaul',
@@ -54,7 +54,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     title: 'CVCompass: AI-Powered Resume Review for Hiring Teams & Job Seekers',
     startupImage: [
-      'https://github-production-user-asset-6210df.s3.amazonaws.com/103353878/474225409-814c2cc2-6976-456d-aad2-663477e70d3e.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250804T215248Z&X-Amz-Expires=300&X-Amz-Signature=38a9733f9e4e7edeb73c8c6b25a6dfc16be97c6c3438d086b6bdf3bf54b23754&X-Amz-SignedHeaders=host',
+      'https://ik.imagekit.io/hmeujbosa/QBanner.png?updatedAt=1754347327241',
     ],
   },
   category: 'productivity',
