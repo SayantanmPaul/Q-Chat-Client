@@ -4,6 +4,10 @@ import { TextShimmer } from '../motion-primitives/text-shimmer';
 import { BookOpenTextIcon, GlobeIcon } from 'lucide-react';
 import { useQchatStore } from '@/store/qchatStore';
 import { useEffect } from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
+import { MarkdownRenderer } from '../ui/markdown-renderer';
 
 const SearchStages = ({ searchInfo }: { searchInfo: SearchInfo | null }) => {
   if (!searchInfo || !searchInfo.stages || searchInfo.stages.length === 0)
@@ -71,7 +75,7 @@ const SearchStages = ({ searchInfo }: { searchInfo: SearchInfo | null }) => {
 
               {/* Search Results */}
               {searchInfo.urls && searchInfo.urls.length > 0 && (
-                <div className="space-y-1 pl-2">
+                <div className="max-w-2xl space-y-1 pl-2">
                   <div className="flex flex-wrap gap-2">
                     {Array.isArray(searchInfo.urls) ? (
                       searchInfo.urls.map((url, index) => (
@@ -143,7 +147,7 @@ const MessageArea = ({ messages }: { messages: Message[] }) => {
           key={message.id}
           className={`flex ${message.isUser ? 'justify-end' : 'justify-start'} mb-5`}
         >
-          <div className="flex max-w-2xl flex-col">
+          <div className="flex max-w-4xl flex-col">
             {/* Search Status Display - Now ABOVE the message */}
             {!message.isUser && message.searchInfo && (
               <SearchStages searchInfo={message.searchInfo} />
@@ -151,16 +155,22 @@ const MessageArea = ({ messages }: { messages: Message[] }) => {
 
             {/* Message Content */}
             <div
-              className={`flex w-fit items-start gap-2 rounded-lg border-2 px-5 py-3 font-medium ${
+              className={`flex flex-col items-start gap-2 rounded-lg border-2 px-5 py-3 font-medium ${
                 message.isUser
-                  ? 'dark:border-neutral-700/10 dark:bg-[#121212]'
-                  : 'shadow-sm dark:border-neutral-700/10 dark:bg-[#121212]'
+                  ? 'dark:border-neutral-700/10 dark:bg-[#121212] max-w-2xl w-full'
+                  : 'shadow-sm dark:border-neutral-700/10 dark:bg-[#121212] w-fit'
               }`}
             >
               {!message.content || message.isLoading ? (
                 <ResponseLoader />
               ) : (
-                <span>{message.content}</span>
+                <ReactMarkdown
+                  components={MarkdownRenderer}
+                  remarkPlugins={[remarkGfm]}
+                  rehypePlugins={[rehypeRaw]}
+                >
+                  {message.content}
+                </ReactMarkdown>
               )}
             </div>
           </div>

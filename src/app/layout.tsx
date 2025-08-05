@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     'debt funds overview',
     'SIP investment tips',
     'NPS vs PPF comparison',
-    ' tax deduction under 80C',
+    'tax deduction under 80C',
     'wealth management chatbot',
     'investment advice AI,',
     'Qchat for Gen Z investors',
