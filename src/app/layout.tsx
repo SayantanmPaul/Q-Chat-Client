@@ -66,6 +66,9 @@ export const metadata: Metadata = {
   ],
   creator: 'Team Quantaa',
   themeColor: '#181818',
+  verification: {
+    google: '8zmsgtRy5MbitlBu9DMLcVY-t5fjsHZrxepdBHjuELI',
+  },
 };
 
 export default function RootLayout({
