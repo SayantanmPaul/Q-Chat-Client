@@ -1,10 +1,12 @@
 import { Message, SearchInfo } from '@/types/message-type';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 interface StreamOptions {
   userInput: string;
   checkpointId: string | null;
   aiResponseId: number;
+  modelName: string;
   updateMessage: (updater: (prev: Message[]) => Message[]) => void;
   setCheckpointId: (id: string) => void;
 }
@@ -16,6 +18,7 @@ export const useChatStream = ({ baseURL }: { baseURL: string }) => {
     userInput,
     checkpointId,
     aiResponseId,
+    modelName,
     updateMessage,
     setCheckpointId,
   }: StreamOptions) => {
@@ -27,6 +30,8 @@ export const useChatStream = ({ baseURL }: { baseURL: string }) => {
     if (checkpointId) {
       url += `&checkpoint_id=${encodeURIComponent(checkpointId)}`;
     }
+
+    url += `&model_name=${encodeURIComponent(modelName)}`;
 
     const eventSource = new EventSource(url);
     setStreaming(true);
@@ -128,6 +133,45 @@ export const useChatStream = ({ baseURL }: { baseURL: string }) => {
           );
         }
 
+        // handle rate limit
+        else if (data.type === 'error') {
+          const raw = String(data.message || '');
+          const { limit, requested } = parseTokenPerMin(raw);
+
+          // show toast for rate limits
+          if (limit || requested) {
+            toast.error(`Rate limit exceeded`, {
+              description: () => (
+                <>
+                  <p>{`Allowed: ${limit ?? 'unknown'} tokens per minute,`}</p>
+                  <p>{`Requested: ${requested ?? 'unknown'} tokens.`}</p>
+                  <p>Try shortening your input or use larger model.</p>
+                </>
+              ),
+              duration: 10000,
+              richColors: true,
+            });
+          } else {
+            toast.error(`Rate limit exceeded`, {
+              description: `${raw} Please try again with a smaller query or choose another model.`,
+            });
+          }
+
+          updateMessage(prev =>
+            prev.map(msg =>
+              msg.id === aiResponseId
+                ? {
+                    ...msg,
+                    content:
+                      'Rate limit exceeded, please change the model or use a smaller query.',
+                    error: { raw },
+                    isLoading: false,
+                  }
+                : msg,
+            ),
+          );
+        }
+
         // end of stream handling
         else if (data.type === 'end') {
           // When stream ends, add 'writing' stage if we had search info
@@ -177,3 +221,12 @@ export const useChatStream = ({ baseURL }: { baseURL: string }) => {
   };
   return { startStream, streaming };
 };
+
+function parseTokenPerMin(msg: string): { limit?: number; requested?: number } {
+  const limitMatch = msg.match(/Limit\s+(\d+)/i);
+  const reqMatch = msg.match(/Requested\s+(\d+)/i);
+  return {
+    limit: limitMatch ? Number(limitMatch[1]) : undefined,
+    requested: reqMatch ? Number(reqMatch[1]) : undefined,
+  };
+}

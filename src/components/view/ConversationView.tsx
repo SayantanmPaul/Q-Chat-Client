@@ -20,7 +20,7 @@ const ConversationView = () => {
     baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}/chat-stream` || '',
   });
 
-  const { data: currentModel } = useGetCurrentModel();
+  const { data: modelList } = useGetCurrentModel();
 
   const {
     selectedModel,
@@ -29,12 +29,6 @@ const ConversationView = () => {
     setClearStore,
     isLoading,
   } = useQchatStore();
-
-  useEffect(() => {
-    if (currentModel) {
-      setSelectedModel(currentModel);
-    }
-  }, [currentModel, setSelectedModel]);
 
   useEffect(() => {
     setClearStore();
@@ -74,6 +68,7 @@ const ConversationView = () => {
       userInput: value,
       checkpointId,
       aiResponseId,
+      modelName: selectedModel?.name || '',
       updateMessage: setMessages,
       setCheckpointId,
     });
@@ -129,7 +124,7 @@ const ConversationView = () => {
               setCurrentMessage(e.target.value)
             }
             onSubmit={onSubmit}
-            // modelData={data?.data?.llmModels}
+            modelData={modelList?.data}
             isLoading={isLoading}
             currentModel={selectedModel}
             onModelChange={setSelectedModel}

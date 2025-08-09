@@ -24,7 +24,7 @@ interface TextAreaProps {
   placeholders: string[];
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   onSubmit: (value: string) => void;
-  // modelData: { name: string; description: string }[];
+  modelData: { name: string; description: string }[];
   isLoading?: boolean;
   currentModel: { name: string; description?: string } | null;
   onModelChange: (model: { name: string; description?: string }) => void;
@@ -34,7 +34,7 @@ export function AskToLlmTextarea({
   placeholders,
   onChange,
   onSubmit,
-  // modelData,
+  modelData,
   isLoading,
   onModelChange,
 }: TextAreaProps) {
@@ -277,7 +277,7 @@ export function AskToLlmTextarea({
       </div>
       <div className="flex w-full items-end justify-between">
         <ModelSelectionDropDown
-          // modelData={modelData}
+          modelData={modelData}
           selectedModel={selectedModel}
           onModelChange={onModelChange}
         />

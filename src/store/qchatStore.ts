@@ -7,8 +7,8 @@ export interface ChatMessage {
 }
 
 export interface QChatStoreType {
-  selectedModel: { name: string } | null;
-  setSelectedModel: (model: { name: string }) => void;
+  selectedModel: { name: string; description?: string } | null;
+  setSelectedModel: (model: { name: string; description?: string }) => void;
   isLoading: boolean;
   setIsLoading: (loading: boolean) => void;
   conversationList: ChatMessage[];
