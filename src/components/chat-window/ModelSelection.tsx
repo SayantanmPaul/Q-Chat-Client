@@ -43,10 +43,6 @@ const ModelSelectionDropDown = ({
         >
           {isLoading ? (
             <Skeleton className="h-4 w-24" />
-          ) : !modelData || modelData.length === 0 ? (
-            <span className="font-briColage text-sm font-medium">
-              Model selection unavailable
-            </span>
           ) : selectedModel ? (
             <>
               <span className="font-briColage text-sm font-medium">
@@ -56,7 +52,7 @@ const ModelSelectionDropDown = ({
             </>
           ) : (
             <>
-              <span className="font-briColage text-sm font-medium">
+              <span className="font-briColage w-32 text-start text-sm font-medium">
                 Select a model
               </span>
               <IconChevronDown stroke={2} className="h-4 w-4" />
