@@ -1,4 +1,5 @@
 import { Message, SearchInfo } from '@/types/message-type';
+import { parseTokenPerMin } from '@/utils/helper';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
@@ -200,6 +201,7 @@ export const useChatStream = ({ baseURL }: { baseURL: string }) => {
       }
     };
 
+    // handle error if event source fails
     eventSource.onerror = err => {
       console.error('EventSource failed:', err);
       eventSource.close();
@@ -221,12 +223,3 @@ export const useChatStream = ({ baseURL }: { baseURL: string }) => {
   };
   return { startStream, streaming };
 };
-
-function parseTokenPerMin(msg: string): { limit?: number; requested?: number } {
-  const limitMatch = msg.match(/Limit\s+(\d+)/i);
-  const reqMatch = msg.match(/Requested\s+(\d+)/i);
-  return {
-    limit: limitMatch ? Number(limitMatch[1]) : undefined,
-    requested: reqMatch ? Number(reqMatch[1]) : undefined,
-  };
-}
