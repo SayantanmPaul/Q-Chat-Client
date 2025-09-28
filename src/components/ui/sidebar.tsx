@@ -89,11 +89,11 @@ export const DesktopSidebar = ({
     <>
       <motion.div
         className={cn(
-          'hidden h-full w-[300px] shrink-0 bg-neutral-100 p-4 md:flex md:flex-col dark:bg-neutral-800',
+          'hidden h-full w-[310px] shrink-0 bg-neutral-100 px-5 py-6 md:flex md:flex-col dark:bg-neutral-800',
           className,
         )}
         animate={{
-          width: animate ? (open ? '300px' : '84px') : '300px',
+          width: animate ? (open ? '310px' : '80px') : '310px',
         }}
         // onMouseEnter={() => setOpen(true)}
         // onMouseLeave={() => setOpen(false)}
@@ -140,7 +140,7 @@ export const MobileSidebar = ({
                 ease: 'easeInOut',
               }}
               className={cn(
-                'fixed inset-0 z-[100] flex h-full w-full max-w-80 flex-col justify-between bg-white p-4 dark:bg-neutral-900',
+                'fixed inset-0 z-[100] flex h-full w-full max-w-full flex-col justify-between bg-white px-7 py-6 dark:bg-neutral-900',
                 className,
               )}
             >

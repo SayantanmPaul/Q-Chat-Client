@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
 import { Analytics } from '@vercel/analytics/next';
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { fontBriColage, fontDepartureMono, fontJost } from '../../assets/fonts';
 import './globals.css';
 import QueryProvider from '@/lib/QueryProvider';
@@ -62,13 +62,15 @@ export const metadata: Metadata = {
   authors: [
     { name: 'Team Quantaa', url: 'https://www.quantaa.club' },
     { name: 'Sayantan Paul', url: 'https://www.sayantanpaul.com' },
-    { name: 'Revanth Anupoju', url: 'https://revanupoju.framer.website' },
   ],
   creator: 'Team Quantaa',
-  themeColor: '#181818',
   verification: {
     google: '8zmsgtRy5MbitlBu9DMLcVY-t5fjsHZrxepdBHjuELI',
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: '#181818',
 };
 
 export default function RootLayout({

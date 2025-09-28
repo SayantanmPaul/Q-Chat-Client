@@ -1,22 +1,15 @@
-import React from 'react';
-import { Button } from '../ui/button';
-import { IconPlus } from '@tabler/icons-react';
-import { cn } from '@/lib/utils';
+import { PlusIcon } from 'lucide-react';
+import BrandButton from '../ui/BrandButton';
 
-const NewChatButton = ({ open }: { open: boolean }) => {
+const NewChatButton = () => {
   return (
-    <Button
-      className={cn(
-        'flex flex-row items-center justify-center gap-2 rounded-full text-neutral-800',
-      )}
-    >
-      <IconPlus stroke={2.4} size={16} />
-      {open && (
-        <p className={cn('font-jost font-semibold tracking-wider')}>
-          Start new chat
-        </p>
-      )}
-    </Button>
+    <BrandButton
+      text="Start new chat"
+      width={64}
+      height={10}
+      shortcutKey="⌘ + K"
+      icon={<PlusIcon size={16} className="h-4 w-4" strokeWidth={2.4} />}
+    />
   );
 };
 
