@@ -235,7 +235,7 @@ export function AskToLlmTextarea({
   return (
     <form
       className={cn(
-        'relative mx-auto flex w-full max-w-sm flex-col gap-2 overflow-hidden rounded-2xl border-2 border-neutral-700/40 bg-white p-2 shadow-lg shadow-neutral-900 transition duration-200 focus:border-neutral-700 md:max-w-xl lg:max-w-4xl dark:bg-[#452A7C1A]/90',
+        'relative mx-auto flex w-full max-w-sm flex-col gap-2 overflow-hidden rounded-2xl border-2 border-neutral-700/40 bg-white p-2 shadow-lg shadow-neutral-900 transition duration-200 focus:border-neutral-700 md:max-w-xl lg:max-w-[820px] dark:bg-[#452A7C1A]/90',
         value && 'bg-gray-50',
       )}
       onSubmit={handleSubmit}
