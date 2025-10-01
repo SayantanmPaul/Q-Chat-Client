@@ -6,10 +6,9 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
+import { useQchatStore } from '@/store/qchatStore';
 import { IconChevronDown } from '@tabler/icons-react';
 import React, { useEffect } from 'react';
-import { Button } from '../ui/button';
-import { useQchatStore } from '@/store/qchatStore';
 
 const ModelSelectionDropDown = ({
   modelData,
@@ -34,11 +33,10 @@ const ModelSelectionDropDown = ({
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
+        <button
           disabled={isLoading}
           className={cn(
-            `font-departureMono gap-2 rounded-lg border border-neutral-700/40 text-xs duration-300 ease-in-out select-none hover:dark:bg-zinc-900/80 ${open && 'dark:bg-zinc-900/80'} ${!isLoading && !modelData ? 'cursor-not-allowed text-gray-500 hover:text-gray-500' : 'cursor-pointer text-gray-300'}`,
+            `font-briColage gap-2 rounded-2xl border border-zinc-900/60 bg-[#404040]/40 text-xs duration-300 ease-in-out select-none ${open && 'dark:bg-zinc-900/80'} ${!isLoading && !modelData ? 'cursor-not-allowed text-[#A1A1A1]' : 'cursor-pointer text-gray-300'} flex items-center px-4 py-2 leading-7 outline-0`,
           )}
         >
           {isLoading ? (
@@ -58,13 +56,13 @@ const ModelSelectionDropDown = ({
               <IconChevronDown stroke={2} className="h-4 w-4" />
             </>
           )}
-        </Button>
+        </button>
       </DropdownMenuTrigger>
       {modelData && modelData.length > 0 && (
         <DropdownMenuContent
           align="start"
-          sideOffset={20}
-          className="flex w-80 max-w-sm flex-col gap-2 rounded-lg border border-neutral-700/40 p-2 text-gray-200 backdrop-blur-sm md:w-auto lg:w-auto dark:bg-neutral-900/60"
+          sideOffset={12}
+          className="flex w-auto max-w-sm flex-col gap-2 rounded-3xl border border-zinc-900/80 bg-[#404040]/40 p-3 text-gray-200 backdrop-blur-sm md:w-auto lg:w-auto"
         >
           {modelData.map((model, _) => (
             <DropdownMenuItem
@@ -72,20 +70,20 @@ const ModelSelectionDropDown = ({
               key={_}
               onClick={() => onModelChange(model)}
               className={cn(
-                `hover:dark:bg-primary/5 flex flex-col items-start gap-2 rounded-sm ${
+                `flex flex-col items-start gap-1 rounded-2xl px-3 py-2 hover:dark:bg-[#2B2B2B]/40 ${
                   selectedModel?.name === model.name
-                    ? 'dark:bg-primary/5 bg-blue-800 text-white dark:text-white'
+                    ? 'bg-[#2B2B2B]/40 text-white dark:text-white'
                     : ''
                 }`,
               )}
             >
-              <span className="flex items-center gap-2">
+              <span className="flex items-center gap-3">
                 <p className="font-briColage text-sm font-medium">
                   {model.name}
                 </p>
                 {selectedModel?.name === model.name && <ActivePing />}
               </span>
-              <p className="font-departureMono text-xs font-medium text-gray-400">
+              <p className="font-briColage text-xs font-medium text-[#A1A1A1]">
                 {model.description}
               </p>
             </DropdownMenuItem>

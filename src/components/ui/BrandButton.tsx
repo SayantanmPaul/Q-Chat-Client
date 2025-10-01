@@ -11,6 +11,8 @@ interface BrandButtonProps
   category?: 'primary' | 'secondary';
   shortcutKey?: string;
   position?: 'left' | 'right' | 'center';
+  boldText?: boolean;
+  partOfSidebar?: boolean;
   icon?: React.JSX.Element | React.ReactNode;
 }
 
@@ -22,16 +24,18 @@ const BrandButton = ({
   shortcutKey,
   position = 'center',
   icon,
+  boldText,
+  partOfSidebar,
   ...props
 }: BrandButtonProps) => {
   const { isSidebarOpen } = useQchatStore();
 
   const heightClass = height ? `h-${height}` : 'h-fit';
-  const widthClass = width ? `w-${width}` : 'w-full';
+  const widthClass = width ? `w-[${width}px]` : 'w-full';
 
   return (
     <Button
-      className={` ${heightClass} ${widthClass} font-briColage bg-gradient-to-br ${category === 'primary' ? 'bg-gradient-to-br from-[#3DDBB0] to-[#89E06C] text-[#262626]' : 'bg-[#404040]/40 text-[#8A8A8A] hover:bg-[#404040]/80'} ${position === 'left' ? 'justify-start' : position === 'right' ? 'justify-end' : 'justify-center'} flex cursor-pointer items-center rounded-3xl px-0 transition-all hover:opacity-90`}
+      className={` ${heightClass} ${widthClass} font-briColage bg-gradient-to-br ${category === 'primary' ? 'bg-gradient-to-br from-[#3DDBB0] to-[#89E06C] text-[#262626]' : 'bg-[#404040]/40 text-[#8A8A8A] hover:bg-[#404040]/80'} ${position === 'left' ? 'justify-start' : position === 'right' ? 'justify-end' : ''} flex cursor-pointer items-center rounded-3xl px-0 font-semibold transition-all hover:opacity-90`}
       {...props}
     >
       {shortcutKey ? (
@@ -41,7 +45,7 @@ const BrandButton = ({
           <span className={`flex items-center gap-2`}>
             {icon}
             <AnimatePresence mode="sync">
-              {isSidebarOpen && (
+              {partOfSidebar && isSidebarOpen && (
                 <motion.p
                   initial={{ opacity: 1 }}
                   animate={{ opacity: 1 }}
@@ -51,7 +55,7 @@ const BrandButton = ({
                     duration: 0.3,
                     ease: 'anticipate',
                   }}
-                  className={`text-sm leading-10 font-medium lg:font-semibold`}
+                  className={`text-sm leading-10 ${boldText ? 'font-semibold' : 'font-medium lg:font-semibold'}`}
                 >
                   {text}
                 </motion.p>
@@ -66,11 +70,11 @@ const BrandButton = ({
         </div>
       ) : (
         <span
-          className={`flex items-center gap-2 ${isSidebarOpen ? 'pl-4' : 'pl-3'}`}
+          className={`flex items-center gap-3 ${isSidebarOpen && icon ? 'pl-3' : !isSidebarOpen && icon ? 'pl-3' : 'pl-0'}`}
         >
           {icon}
-          <AnimatePresence mode="sync">
-            {isSidebarOpen && (
+          {partOfSidebar && isSidebarOpen ? (
+            <AnimatePresence mode="sync">
               <motion.p
                 initial={{ opacity: 1 }}
                 animate={{ opacity: 1 }}
@@ -80,12 +84,18 @@ const BrandButton = ({
                   duration: 0.3,
                   ease: 'anticipate',
                 }}
-                className={`text-sm leading-10 font-medium lg:font-semibold ${isSidebarOpen ? 'visible' : 'invisible'}`}
+                className={`text-sm leading-10 ${boldText ? 'font-semibold' : 'font-medium'} ${isSidebarOpen ? 'visible' : 'invisible'}`}
               >
                 {text}
               </motion.p>
-            )}
-          </AnimatePresence>
+            </AnimatePresence>
+          ) : (
+            <p
+              className={`text-xs leading-10 lg:text-sm ${boldText ? 'font-semibold' : 'font-medium'} font-briColage`}
+            >
+              {text}
+            </p>
+          )}
         </span>
       )}
     </Button>

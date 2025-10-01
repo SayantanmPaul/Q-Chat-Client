@@ -9,6 +9,7 @@ const SearchChatButton = () => {
       height={10}
       position="left"
       category="secondary"
+      partOfSidebar={true}
       icon={<SearchIcon size={16} className="h-4 w-4" strokeWidth={2.4} />}
     />
   );

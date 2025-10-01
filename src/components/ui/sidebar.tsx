@@ -1,9 +1,9 @@
 'use client';
 import { cn } from '@/lib/utils';
-import { IconLayoutSidebarRightCollapseFilled } from '@tabler/icons-react';
+// import { IconLayoutSidebarRightCollapseFilled } from '@tabler/icons-react';
 import { AnimatePresence, motion } from 'motion/react';
 import React, { createContext, useContext, useState } from 'react';
-import { Button } from './button';
+// import { Button } from './button';
 
 interface Links {
   label: string;
@@ -110,6 +110,7 @@ export const MobileSidebar = ({
   children,
   ...props
 }: React.ComponentProps<'div'>) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { open, setOpen } = useSidebar();
   return (
     <>
@@ -119,7 +120,7 @@ export const MobileSidebar = ({
         )}
         {...props}
       >
-        <Button
+        {/* <Button
           variant="ghost"
           onClick={() => setOpen(!open)}
           className="absolute top-5 left-4 z-20 text-neutral-200"
@@ -128,7 +129,7 @@ export const MobileSidebar = ({
             size={20}
             className="min-h-6 min-w-6 text-neutral-800 dark:text-neutral-200"
           />
-        </Button>
+        </Button> */}
         <AnimatePresence>
           {open && (
             <motion.div
@@ -140,7 +141,7 @@ export const MobileSidebar = ({
                 ease: 'easeInOut',
               }}
               className={cn(
-                'fixed inset-0 z-[100] flex h-full w-full max-w-full flex-col justify-between bg-white px-7 py-6 dark:bg-neutral-900',
+                'fixed inset-0 z-[100] flex h-full w-full max-w-full flex-col justify-between bg-white px-6 py-4 dark:bg-neutral-900',
                 className,
               )}
             >

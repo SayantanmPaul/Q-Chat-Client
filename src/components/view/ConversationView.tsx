@@ -11,6 +11,7 @@ import GreetingMessage from '../chat-window/GreetingMessage';
 import ExampleQueries from '../chat-window/ExampleQueries';
 import useChatScroll from '@/hooks/useChatScroll';
 import { AnimatePresence, motion } from 'motion/react';
+import NavbarItemsContainer from '../chat-window/NavbarItemsContainer';
 
 const ConversationView = () => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -91,8 +92,11 @@ const ConversationView = () => {
         <motion.div
           transition={{ duration: 0.5 }}
           animate={{ justifyContent: messages.length > 0 ? 'end' : 'center' }}
-          className={`flex h-full w-full flex-1 flex-col items-center gap-4 overflow-y-auto ${messages.length > 0 ? 'justify-end' : 'justify-center'}`}
+          className={`relative flex h-full w-full flex-1 flex-col items-center gap-4 overflow-y-auto ${messages.length > 0 ? 'justify-end' : 'justify-center'} `}
         >
+          <div className="absolute top-0 w-full">
+            <NavbarItemsContainer />
+          </div>
           <div
             className={`relative flex w-full flex-col ${messages.length > 0 ? 'h-full max-w-full gap-0 pb-4' : 'h-auto max-w-[820px] gap-12 pb-0'}`}
           >
