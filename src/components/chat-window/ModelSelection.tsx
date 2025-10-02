@@ -62,7 +62,7 @@ const ModelSelectionDropDown = ({
         <DropdownMenuContent
           align="start"
           sideOffset={12}
-          className="flex w-auto max-w-sm flex-col gap-2 rounded-3xl border border-zinc-900/80 bg-[#404040]/40 p-3 text-gray-200 backdrop-blur-sm md:w-auto lg:w-auto"
+          className="flex w-auto max-w-sm flex-col gap-2 rounded-3xl border border-zinc-900/80 bg-[#404040]/40 p-3 text-gray-200 backdrop-blur-sm "
         >
           {modelData.map((model, _) => (
             <DropdownMenuItem

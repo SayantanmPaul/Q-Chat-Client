@@ -1,7 +1,12 @@
 'use client';
 
+import AnimatedFileTextarea, {
+  SearchEnebledButton,
+  SubmitButton,
+} from '@/components/chat-window/AnimatedFileTextarea';
 import LanguageSelector from '@/components/chat-window/LanguageSelector';
 import ModelSelectionDropDown from '@/components/chat-window/ModelSelection';
+import FileUploader from '@/components/ui/FileUploader';
 import { useGetCurrentModel } from '@/lib/queries/chat.queries';
 import { useQchatStore } from '@/store/qchatStore';
 import { useState } from 'react';
@@ -44,20 +49,60 @@ const Page = () => {
     },
   ];
 
+  const handleSelectedFile = (file: File) => {
+    console.log('Selected file:', file);
+  };
+
   return (
-    <div className="flex h-screen w-full items-center justify-center space-x-10 bg-black">
-      <ModelSelectionDropDown
-        modelData={modelList?.data}
-        selectedModel={selectedModel}
-        onModelChange={setSelectedModel}
-      />
-      <LanguageSelector
-        selectedLanguage={activeLanguage}
-        availableLanguages={availableLanguages}
-        onLanguageChange={setActiveLanguage}
-      />
+    <div className="flex h-full w-full flex-col items-center justify-center space-y-10 bg-black">
+      <h1 className="font-briColage w-full text-center text-3xl leading-10 font-semibold">
+        Playground
+      </h1>
+      <div className="flex items-center justify-center space-x-10">
+        <ModelSelectionDropDown
+          modelData={modelList?.data}
+          selectedModel={selectedModel}
+          onModelChange={setSelectedModel}
+        />
+        <FileUploader onFileSelected={handleSelectedFile} />
+        <SearchEnebledButton />
+        <SubmitButton disabled={false} />
+        <LanguageSelector
+          selectedLanguage={activeLanguage}
+          availableLanguages={availableLanguages}
+          onLanguageChange={setActiveLanguage}
+        />
+      </div>
+      <TextAreaSection />
     </div>
   );
 };
 
 export default Page;
+
+const TextAreaSection = () => {
+  const placeholders = [
+    'What is a mutual fund?',
+    'How do I start investing with ₹500?',
+    'What’s the difference between SIP and lumpsum?',
+    'Is it better to invest in FD or mutual funds?',
+    'Are mutual funds safe?',
+  ];
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [currentMessage, setCurrentMessage] = useState('');
+
+  return (
+    <div className="w-full max-w-[820px]">
+      <AnimatedFileTextarea
+        placeholders={placeholders}
+        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+          setCurrentMessage(e.target.value)
+        }
+        onSubmit={(value: string) => {
+          if (!value.trim()) return;
+        }}
+      />
+    </div>
+  );
+};

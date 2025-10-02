@@ -2,16 +2,15 @@
 // import useChatScroll from '@/hooks/useChatScroll';
 import { useQchatStore } from '@/store/qchatStore';
 import { useEffect, useState } from 'react';
-import { AskToLlmTextarea } from '../ui/AskToLlmTextarea';
 import { useChatStream } from '@/hooks/useChatStream';
 import { Message } from '@/types/message-type';
 import MessageArea from '../chat-window/MessageArea';
-import { useGetCurrentModel } from '@/lib/queries/chat.queries';
 import GreetingMessage from '../chat-window/GreetingMessage';
 import ExampleQueries from '../chat-window/ExampleQueries';
 import useChatScroll from '@/hooks/useChatScroll';
 import { AnimatePresence, motion } from 'motion/react';
 import NavbarItemsContainer from '../chat-window/NavbarItemsContainer';
+import AnimatedFileTextarea from '../chat-window/AnimatedFileTextarea';
 
 const ConversationView = () => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -24,11 +23,8 @@ const ConversationView = () => {
     baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}/chat-stream` || '',
   });
 
-  const { data: modelList } = useGetCurrentModel();
-
   const {
     selectedModel,
-    setSelectedModel,
     // setConversationList,
     setClearStore,
     isLoading,
@@ -98,15 +94,17 @@ const ConversationView = () => {
             <NavbarItemsContainer />
           </div>
           <div
-            className={`relative flex w-full flex-col ${messages.length > 0 ? 'h-full max-w-full gap-0 pb-4' : 'h-auto max-w-[820px] gap-12 pb-0'}`}
+            className={`relative flex w-full max-w-[936px] flex-col items-center ${messages.length > 0 ? 'h-full gap-0 pb-4' : 'h-auto gap-12 pb-0'}`}
           >
             <div
-              className="scrolling-touch flex-1 overflow-y-auto"
+              className="scrolling-touch w-full flex-1 overflow-y-auto"
               ref={autoScrollRef}
             >
               {messages.length < 1 ? (
-                <div className="flex w-full items-start px-3">
-                  <GreetingMessage />
+                <div className="flex w-full justify-center">
+                  <div className="flex w-full max-w-[820px] items-start px-3">
+                    <GreetingMessage />
+                  </div>
                 </div>
               ) : (
                 <>
@@ -119,17 +117,14 @@ const ConversationView = () => {
                 </>
               )}
             </div>
-            <div className="flex flex-col gap-4">
-              <AskToLlmTextarea
+            <div className="flex w-full max-w-[820px] flex-col gap-4">
+              <AnimatedFileTextarea
                 placeholders={placeholders}
                 onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
                   setCurrentMessage(e.target.value)
                 }
                 onSubmit={onSubmit}
-                modelData={modelList?.data}
                 isLoading={isLoading}
-                currentModel={selectedModel}
-                onModelChange={setSelectedModel}
               />
               {messages.length < 1 && (
                 <div className="px-2 lg:px-3">
