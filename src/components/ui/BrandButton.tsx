@@ -91,7 +91,7 @@ const BrandButton = ({
             </AnimatePresence>
           ) : (
             <p
-              className={`text-xs leading-10 lg:text-sm ${boldText ? 'font-semibold' : 'font-medium'} font-briColage`}
+              className={`text-xs leading-10 lg:text-sm ${boldText ? 'font-semibold' : 'font-bold'} font-briColage`}
             >
               {text}
             </p>

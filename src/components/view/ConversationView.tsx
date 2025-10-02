@@ -83,18 +83,18 @@ const ConversationView = () => {
   ];
 
   return (
-    <div className="relative flex h-screen max-h-[calc(100vh-0px)] flex-1 bg-[#0D0D0D] px-4 md:max-h-full lg:max-h-full lg:px-0 dark:bg-[#0D0D0D]">
+    <div className="relative flex h-screen max-h-[calc(100vh-0px)] flex-1 bg-[#0D0D0D] px-4 md:max-h-full lg:max-h-full lg:px-0">
       <AnimatePresence>
         <motion.div
           transition={{ duration: 0.5 }}
           animate={{ justifyContent: messages.length > 0 ? 'end' : 'center' }}
           className={`relative flex h-full w-full flex-1 flex-col items-center gap-4 overflow-y-auto ${messages.length > 0 ? 'justify-end' : 'justify-center'} `}
         >
-          <div className="absolute top-0 w-full">
+          <div className="absolute top-0 z-10 w-full bg-[#0D0D0D] lg:bg-transparent">
             <NavbarItemsContainer />
           </div>
           <div
-            className={`relative flex w-full max-w-[936px] flex-col items-center ${messages.length > 0 ? 'h-full gap-0 pb-4' : 'h-auto gap-12 pb-0'}`}
+            className={`relative flex w-full flex-col items-center lg:px-1 ${messages.length > 0 ? 'h-full gap-0 pb-4' : 'h-auto gap-5 pb-0 lg:gap-12'}`}
           >
             <div
               className="scrolling-touch w-full flex-1 overflow-y-auto"
@@ -108,7 +108,7 @@ const ConversationView = () => {
                 </div>
               ) : (
                 <>
-                  <div className="sticky top-0 left-0 z-20">
+                  <div className="sticky top-16 left-0 z-20 lg:hidden">
                     <div className="pointer-events-none h-12 w-full bg-gradient-to-b from-[#0D0D0D] to-transparent" />
                   </div>
                   <div className="mx-auto flex w-full max-w-sm flex-col md:max-w-[548px] lg:max-w-[936px]">

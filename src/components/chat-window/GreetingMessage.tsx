@@ -36,10 +36,10 @@ const GreetingMessage = () => {
 
   return (
     <div>
-      <h1 className="font-briColage to-danger font-wrap cursor-default overflow-clip bg-gradient-to-br from-[#3DDBB0] to-[#94E162] bg-clip-text text-[22px] leading-7 font-semibold text-transparent lg:text-3xl lg:leading-10">
+      <h1 className="font-briColage cursor-default overflow-clip bg-gradient-to-br from-[#3DDBB0] to-[#94E162] bg-clip-text text-[22px] leading-7 font-semibold text-transparent lg:text-3xl lg:leading-10">
         {greeting}
         <br />{' '}
-        <span className="text-[18px] font-medium lg:text-3xl lg:font-semibold lg:text-inherit">
+        <span className="text-[18px] leading-7 font-semibold lg:text-3xl lg:text-inherit">
           {randomMessage}
         </span>
       </h1>
