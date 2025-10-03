@@ -310,7 +310,7 @@ export const SubmitButton = ({
         <CornerDownRightIcon
           size={16}
           strokeWidth={2.6}
-          className="h-[14px] w-[14px] lg:h-4 lg:w-4"
+          className="h-3.5 w-[14px] lg:h-4 lg:w-4"
         />
         <p className="font-briColage text-xs leading-7 font-bold lg:text-sm">
           Send

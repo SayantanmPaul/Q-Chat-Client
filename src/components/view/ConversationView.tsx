@@ -97,7 +97,7 @@ const ConversationView = () => {
             className={`relative flex w-full flex-col items-center lg:px-1 ${messages.length > 0 ? 'h-full gap-0 pb-4' : 'h-auto gap-5 pb-0 lg:gap-12'}`}
           >
             <div
-              className="scrolling-touch w-full flex-1 overflow-y-auto"
+              className="scrolling-touch w-full flex-1 overflow-y-auto pt-8"
               ref={autoScrollRef}
             >
               {messages.length < 1 ? (
@@ -108,7 +108,7 @@ const ConversationView = () => {
                 </div>
               ) : (
                 <>
-                  <div className="sticky top-16 left-0 z-20 lg:hidden">
+                  <div className="sticky top-7 left-0 z-20 lg:top-16 lg:hidden">
                     <div className="pointer-events-none h-12 w-full bg-gradient-to-b from-[#0D0D0D] to-transparent" />
                   </div>
                   <div className="mx-auto flex w-full max-w-sm flex-col md:max-w-[548px] lg:max-w-[936px]">

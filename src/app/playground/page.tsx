@@ -7,6 +7,7 @@ import AnimatedFileTextarea, {
 import LanguageSelector from '@/components/chat-window/LanguageSelector';
 import ModelSelectionDropDown from '@/components/chat-window/ModelSelection';
 import FileUploader from '@/components/ui/FileUploader';
+import { ResponseLoader } from '@/components/ui/loader';
 import { useGetCurrentModel } from '@/lib/queries/chat.queries';
 import { useQchatStore } from '@/store/qchatStore';
 import { useState } from 'react';
@@ -72,6 +73,9 @@ const Page = () => {
           availableLanguages={availableLanguages}
           onLanguageChange={setActiveLanguage}
         />
+        <div className="max-w-2xl rounded-3xl bg-[#404040]/30 px-5 py-[10px]">
+          <ResponseLoader />
+        </div>
       </div>
       <TextAreaSection />
     </div>

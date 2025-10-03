@@ -1,7 +1,7 @@
 import { Message, SearchInfo } from '@/types/message-type';
 import { ResponseLoader } from '../ui/loader';
 import { TextShimmer } from '../motion-primitives/text-shimmer';
-import { BookOpenTextIcon, GlobeIcon } from 'lucide-react';
+import { GlobeIcon, LibraryIcon, SearchIcon } from 'lucide-react';
 import { useQchatStore } from '@/store/qchatStore';
 import { useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
@@ -20,37 +20,30 @@ const SearchStages = ({ searchInfo }: { searchInfo: SearchInfo | null }) => {
         {/* Searching Stage */}
         {searchInfo.stages.includes('searching') && (
           <div className="relative">
-            <span className="absolute top-0 -left-4 z-10 text-white">
-              <GlobeIcon size={18} />
+            <span className="absolute top-0 -left-4 z-10 text-[#D1D6DC]">
+              <GlobeIcon size={18} strokeWidth={2} className="h-4.5 w-4.5" />
             </span>
             {/* Connecting line to next item if reading exists */}
             {searchInfo.stages.includes('reading') && (
-              <div className="absolute top-4 -left-[8px] h-[calc(100%+0.2rem)] w-[1.8px] bg-gradient-to-b from-[#689B8A]/20 to-[#239BA7]"></div>
+              <div className="absolute top-5 -left-[8px] h-[calc(85%+0.2rem)] w-[1.5px] rounded-xl bg-gradient-to-b from-[#239BA7]/20 to-[#3DDBB0]/80"></div>
             )}
 
             <div className="flex flex-col">
-              <span className="mb-2 ml-2 font-medium text-slate-300">
+              <span className="font-briColage mb-2 ml-3 text-xs leading-5 font-medium text-[#D1D6DC]">
                 Searching the web
               </span>
 
               {/* Search Query */}
               <div className="mt-1 flex flex-wrap gap-2 pl-2">
-                <div className="inline-flex items-center rounded-xl border-2 px-3 py-1.5 text-xs font-medium dark:border-neutral-700/10 dark:bg-[#121212]">
-                  <svg
-                    className="mr-1.5 h-3 w-3 text-gray-500"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                    ></path>
-                  </svg>
-                  <TextShimmer>{searchInfo.query}</TextShimmer>
+                <div className="inline-flex items-center gap-1.5 rounded-xl border bg-[#0C0C0D]/40 px-3 py-1.5 font-medium">
+                  <SearchIcon
+                    size={12}
+                    strokeWidth={3}
+                    className="min-h-3 min-w-3 text-[#6A7282]"
+                  />
+                  <TextShimmer className="font-briColage pt-[2px] text-xs leading-3 font-medium">
+                    {searchInfo.query}
+                  </TextShimmer>
                 </div>
               </div>
             </div>
@@ -60,17 +53,15 @@ const SearchStages = ({ searchInfo }: { searchInfo: SearchInfo | null }) => {
         {/* Reading Stage */}
         {searchInfo.stages.includes('reading') && (
           <div className="relative">
-            {/* Green dot */}
-            {/* <div className="absolute top-1 -left-3 z-10 h-2.5 w-2.5 rounded-full bg-teal-400 shadow-sm"></div> */}
-            <span className="absolute top-1 -left-4 z-10 text-white">
-              <BookOpenTextIcon size={18} />
+            <span className="absolute top-0 -left-4 z-10 text-white">
+              <LibraryIcon size={18} strokeWidth={2} className="h-4.5 w-4.5" />
             </span>
             <div className="flex flex-col">
-              <span className="mb-2 ml-2 font-medium text-slate-300">
+              <span className="font-briColage mb-2 ml-3 text-xs leading-5 font-medium text-[#D1D6DC]">
                 Reading
               </span>
               {searchInfo.stages.includes('reading') && (
-                <div className="absolute top-6 -left-[8px] h-[calc(80%+1rem)] w-[1.5px] bg-gradient-to-b from-[#239BA7]/50 to-[#00c684]"></div>
+                <div className="absolute top-6 -left-[8px] h-[calc(86%+1rem)] w-[1.5px] rounded-xl bg-gradient-to-b from-[#3DDBB0]/80 to-[#89E06C]"></div>
               )}
 
               {/* Search Results */}
@@ -84,7 +75,7 @@ const SearchStages = ({ searchInfo }: { searchInfo: SearchInfo | null }) => {
                           href={url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="font-briColage max-w-40 truncate rounded-full border px-3 py-1.5 text-[10px] text-zinc-400 transition-all duration-300 ease-in-out hover:bg-gray-50 hover:underline lg:max-w-48 dark:border-neutral-700/10 dark:bg-[#2a2929]"
+                          className="font-briColage max-w-40 truncate rounded-full border bg-[#404040]/40 px-3 py-2 text-[10px] leading-3.5 font-medium text-[#BAC0CC] transition-all duration-300 ease-in-out hover:underline lg:max-w-48 lg:text-xs dark:border-neutral-700/10"
                         >
                           {typeof url === 'string'
                             ? url
@@ -109,8 +100,8 @@ const SearchStages = ({ searchInfo }: { searchInfo: SearchInfo | null }) => {
         {searchInfo.stages.includes('writing') && (
           <div className="relative">
             {/* Green dot with subtle glow effect */}
-            <div className="absolute top-1 -left-3 z-10 h-2.5 w-2.5 rounded-full bg-teal-400 shadow-sm"></div>
-            <span className="pl-2 font-medium text-slate-300">
+            <div className="absolute top-1.5 -left-3 z-10 h-2.5 w-2.5 rounded-full bg-[#89E06C]"></div>
+            <span className="font-briColage ml-3 text-xs leading-5 font-medium text-[#D1D6DC]">
               Writing answer
             </span>
           </div>
@@ -155,10 +146,10 @@ const MessageArea = ({ messages }: { messages: Message[] }) => {
 
             {/* Message Content */}
             <div
-              className={`flex flex-col items-start gap-2 rounded-lg border-2 px-5 py-3 font-medium ${
+              className={`font-briColage flex w-fit flex-col items-start gap-2 font-medium ${
                 message.isUser
-                  ? 'dark:border-neutral-700/10 dark:bg-[#121212] max-w-2xl w-full'
-                  : 'shadow-sm dark:border-neutral-700/10 dark:bg-[#121212] w-fit'
+                  ? 'max-w-2xl rounded-3xl bg-[#404040]/30 px-5 py-[10px]'
+                  : ''
               }`}
             >
               {!message.content || message.isLoading ? (

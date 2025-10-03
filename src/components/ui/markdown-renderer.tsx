@@ -1,13 +1,16 @@
+import { cn } from '@/lib/utils';
 import { Components } from 'react-markdown';
 
 export const MarkdownRenderer: Components = {
-  h1: h1 => <h1 className="text-xl font-bold lg:text-2xl" {...h1} />,
-  h2: h2 => <h2 className="text-lg font-semibold lg:text-xl" {...h2} />,
-  p: p => <p className="text-base lg:text-lg" {...p} />,
-  code: code => (
-    <code className="rounded bg-gray-200 p-1 dark:bg-gray-800" {...code} />
+  h1: h1 => <h1 className="my-2 text-2xl font-semibold lg:text-3xl" {...h1} />,
+  h2: h2 => <h2 className="my-1 text-xl font-semibold lg:text-2xl" {...h2} />,
+  h3: h2 => <h2 className="my-1 text-lg font-semibold lg:text-xl" {...h2} />,
+  h4: h2 => <h2 className="my-1 text-base font-semibold lg:text-lg" {...h2} />,
+  p: p => (
+    <p className="text-sm font-medium text-[#FAFAF9] lg:text-base" {...p} />
   ),
-  li: li => <li className="text-base lg:text-lg" {...li} />,
+  code: code => <code className="font-serif text-sm" {...code} />,
+  li: li => <li className="text-sm font-medium lg:text-base" {...li} />,
   pre: pre => (
     <pre
       className="my-2 overflow-x-auto rounded bg-gray-100 p-3 dark:bg-gray-900"
@@ -29,10 +32,7 @@ export const MarkdownRenderer: Components = {
   em(props) {
     const { ...rest } = props;
     return (
-      <i
-        className="text-blue-600 hover:underline dark:text-blue-400"
-        {...rest}
-      />
+      <i className="text-base font-medium text-[#FAFAF9] italic" {...rest} />
     );
   },
   blockquote: ({ children, ...rest }) => (
@@ -53,7 +53,48 @@ export const MarkdownRenderer: Components = {
       {children}
     </ol>
   ),
-  hr: props => (
-    <hr className="my-4 border-gray-300 dark:border-gray-700" {...props} />
+  table: ({ children, ...rest }) => (
+    <table className="w-full table-auto border-collapse" {...rest}>
+      {children}
+    </table>
   ),
+  thead: ({ children, ...rest }) => (
+    <thead className="border-b border-[#404040]/10 bg-[#404040]/40" {...rest}>
+      {children}
+    </thead>
+  ),
+  tbody: ({ children, ...rest }) => (
+    <tbody className="divide-y divide-[#404040]/80" {...rest}>
+      {children}
+    </tbody>
+  ),
+  th: ({ children, ...rest }) => (
+    <th
+      className="font-briColage bg-accent p-3 text-sm font-semibold tracking-wide text-[#FAFAF9]"
+      {...rest}
+    >
+      {children}
+    </th>
+  ),
+  tr: ({ children, ...rest }) => (
+    <tr
+      className={cn(
+        'p-4',
+        'p-3 odd:bg-[#404040]/20',
+        'p-3 even:bg-[#404040]/40',
+      )}
+      {...rest}
+    >
+      {children}
+    </tr>
+  ),
+  td: ({ children, ...rest }) => (
+    <td
+      className="font-briColage p-3 text-sm font-medium text-[#FAFAF9]"
+      {...rest}
+    >
+      {children}
+    </td>
+  ),
+  hr: props => <hr className="my-4 border-gray-700" {...props} />,
 };

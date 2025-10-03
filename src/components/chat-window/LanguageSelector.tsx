@@ -30,7 +30,7 @@ const LanguageSelector = ({
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
-        <Button className="flex h-auto w-auto gap-[10px] rounded-full bg-[#404040]/40 p-[6px] hover:bg-[#2B2B2B]/60 lg:px-3 lg:py-2">
+        <Button className="flex h-auto w-auto gap-[10px] rounded-full bg-[#404040]/40 p-1.5 hover:bg-[#2B2B2B]/60 lg:px-3 lg:py-2">
           <Image
             src={selectedLanguage.flag}
             alt={selectedLanguage.language}
