@@ -16,10 +16,17 @@ import Image from 'next/image';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
 import { checkServerStatus } from '../../api/axios';
+import SignInDrawer from '@/components/chat-window/SignInDrawer';
 
 export default function Home() {
   // const [open, setOpen] = useState(true);
-  const { setIsMobileView, isSidebarOpen, setIsSidebarOpen } = useQchatStore();
+  const {
+    setIsMobileView,
+    isSidebarOpen,
+    setIsSidebarOpen,
+    isSignInDrawerOpen,
+    setIsSignInDrawerOpen,
+  } = useQchatStore();
 
   // checks the server status by pinging the health endpoint.
   useEffect(() => {
@@ -91,9 +98,16 @@ export default function Home() {
           <RedirectToGithub />
         </SidebarBody>
       </Sidebar>
-      <div className="w-full flex-1 overflow-hidden lg:my-[10px] lg:mr-[10px] lg:rounded-xl">
+      <div
+        vaul-drawer-wrapper=""
+        className="w-full flex-1 overflow-hidden lg:my-[10px] lg:mr-[10px] lg:rounded-xl"
+      >
         <ConversationView />
       </div>
+      <SignInDrawer
+        open={isSignInDrawerOpen}
+        setOpen={() => setIsSignInDrawerOpen(!isSignInDrawerOpen)}
+      />
     </div>
   );
 }

@@ -169,13 +169,26 @@ const ChatHistoryItemMenu = ({
 };
 
 const AskUserToLogin = () => {
+  const {
+    isSignInDrawerOpen,
+    setIsSignInDrawerOpen,
+    isMobileView,
+    setIsSidebarOpen,
+  } = useQchatStore();
+
   return (
     <span className="font-briColage px-1 text-sm font-medium text-[#BAC0CC] lg:text-nowrap">
       To access the chat history please{' '}
       <br className="hidden md:block lg:block" />
-      <a href="#" className="text-[#7DDF77] underline">
+      <button
+        className="cursor-pointer text-[#7DDF77] underline"
+        onClick={() => {
+          if (isMobileView) setIsSidebarOpen(false);
+          setIsSignInDrawerOpen(!isSignInDrawerOpen);
+        }}
+      >
         log in/ sign up
-      </a>{' '}
+      </button>{' '}
       with our app.
     </span>
   );

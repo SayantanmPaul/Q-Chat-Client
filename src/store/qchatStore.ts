@@ -23,6 +23,9 @@ export interface QChatStoreType {
   isSidebarOpen: boolean;
   setIsSidebarOpen: (open: boolean) => void;
 
+  isSignInDrawerOpen: boolean;
+  setIsSignInDrawerOpen: (open: boolean) => void;
+
   setClearStore: () => void;
 }
 
@@ -45,6 +48,9 @@ export const useQchatStore = create<QChatStoreType>()(
 
       isSidebarOpen: true,
       setIsSidebarOpen: open => set({ isSidebarOpen: open }),
+
+      isSignInDrawerOpen: false,
+      setIsSignInDrawerOpen: open => set({ isSignInDrawerOpen: open }),
 
       setClearStore() {
         set({
