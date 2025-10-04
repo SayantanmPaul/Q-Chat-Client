@@ -35,7 +35,7 @@ const SearchStages = ({ searchInfo }: { searchInfo: SearchInfo | null }) => {
 
               {/* Search Query */}
               <div className="mt-1 flex flex-wrap gap-2 pl-2">
-                <div className="inline-flex items-center gap-1.5 rounded-xl border bg-[#0C0C0D]/40 px-3 py-1.5 font-medium">
+                <div className="inline-flex items-center gap-1.5 rounded-xl bg-[#0C0C0D]/30 px-3 py-1.5 font-medium">
                   <SearchIcon
                     size={12}
                     strokeWidth={3}

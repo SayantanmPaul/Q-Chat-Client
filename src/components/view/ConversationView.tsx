@@ -84,6 +84,7 @@ const ConversationView = () => {
 
   return (
     <div className="relative flex h-screen max-h-[calc(100vh-0px)] flex-1 bg-[#0D0D0D] px-4 md:max-h-full lg:max-h-full lg:px-0">
+      <div className="pointer-events-none absolute inset-0 h-full w-auto bg-[url(/images/Background.svg)] bg-size-[auto_140vh] bg-center bg-no-repeat opacity-70 blur-3xl" />
       <AnimatePresence>
         <motion.div
           transition={{ duration: 0.5 }}

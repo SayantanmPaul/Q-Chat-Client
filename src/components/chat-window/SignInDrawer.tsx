@@ -4,6 +4,8 @@ import Image from 'next/image';
 import { Button } from '../ui/button';
 import { Credenza, CredenzaContent, CredenzaTitle } from '../ui/credenza';
 import { Input } from '../ui/input';
+import ShaderBG from '../motion-primitives/shader-bg';
+import { useQchatStore } from '@/store/qchatStore';
 
 const SignInDrawer = ({
   open,
@@ -12,10 +14,15 @@ const SignInDrawer = ({
   open?: boolean;
   setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
+  const { isMobileView } = useQchatStore();
   return (
     <Credenza open={open} onOpenChange={setOpen}>
-      <CredenzaContent className="flex h-[60vh] w-screen max-w-screen items-center overflow-hidden lg:h-screen lg:justify-center lg:rounded-none">
-        <div className="my-6 flex h-full w-full max-w-sm flex-col space-y-8 lg:h-max lg:max-w-[400px] lg:space-y-6">
+      <CredenzaContent className="flex h-[60vh] w-screen max-w-screen items-center overflow-hidden bg-[#0D0D0D] backdrop-blur-3xl lg:h-screen lg:justify-center lg:rounded-none">
+        <ShaderBG />
+        {isMobileView && (
+          <div className="pointer-events-none absolute inset-0 h-full w-auto bg-[url(/images/sign-up.svg)] bg-cover bg-center bg-no-repeat" />
+        )}
+        <div className="z-10 my-6 flex h-full w-full max-w-sm flex-col space-y-8 lg:h-max lg:max-w-[400px] lg:space-y-6">
           {/* header */}
           <span className="flex flex-col items-center space-y-5 lg:space-y-4">
             <CredenzaTitle className="font-briColage cursor-default overflow-clip bg-gradient-to-br from-[#3DDBB0] to-[#94E162] bg-clip-text text-[26px] leading-6 font-bold text-transparent lg:text-[32px] lg:leading-10 lg:font-semibold">
@@ -28,11 +35,11 @@ const SignInDrawer = ({
               get latest update and more
             </h3>
           </span>
-          <form className="flex w-full flex-col gap-4 lg:gap-6">
+          <form tabIndex={0} className="flex w-full flex-col gap-4 lg:gap-6">
             <Input
               type="email"
               placeholder="Enter your email"
-              className="font-briColage h-11 w-full rounded-full border-2 border-[#404040]/40 bg-[#404040]/40 px-6 py-4 text-sm font-medium ring-0 backdrop-blur-sm placeholder:text-[#8A8A8A] focus:ring-0 focus:outline-none lg:h-12 lg:text-base lg:font-semibold"
+              className="font-briColage h-11 w-full rounded-full border-2 border-[#404040]/40 bg-[#404040]/20 px-6 py-4 text-sm font-medium ring-0 backdrop-blur-sm placeholder:text-[#8A8A8A] focus:border-[#404040] focus:ring-0 focus:outline-none lg:h-12 lg:text-base lg:font-semibold"
             />
             <Button className="font-briColage h-11 w-full rounded-full bg-[#66DE8B] text-base leading-5 font-bold text-[#404040] hover:bg-[#66DE8B]/80 lg:h-12 lg:text-lg">
               Continue
