@@ -49,7 +49,11 @@ const queries = [
   },
 ];
 
-const ExampleQueries = () => {
+interface ExampleQueriesProps {
+  onSelect: (query: string) => void; // NEW
+}
+
+const ExampleQueries = ({ onSelect }: ExampleQueriesProps) => {
   return (
     <div className="flex w-auto flex-col gap-3">
       <h3 className="font-briColage text-xs leading-5 font-bold text-[#CECECE] lg:text-sm lg:leading-10">
@@ -62,7 +66,15 @@ const ExampleQueries = () => {
             className="w-full max-w-sm overflow-hidden lg:max-w-full"
           >
             <div className="inline-flex w-max flex-col gap-1 lg:gap-2">
-              <div className="flex items-center gap-2 overflow-ellipsis hover:cursor-pointer">
+              <div
+                className="flex items-center gap-2 overflow-ellipsis hover:cursor-pointer"
+                onClick={() => onSelect(queryObj.question)}
+                role="button"
+                onKeyDown={e => {
+                  if (e.key === 'Enter' || e.key === ' ')
+                    onSelect(queryObj.question);
+                }}
+              >
                 <span className="flex-shrink-0">{queryObj.icon}</span>
                 <p className="font-briColage line-clamp-1 flex-1 truncate overflow-hidden text-sm font-medium text-[#CECECE] lg:text-base lg:font-semibold">
                   {queryObj.question}

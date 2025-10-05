@@ -20,6 +20,7 @@ interface NewData {
 
 interface AnimatedFileTextareaProps {
   placeholders: string[];
+  prefill?: string;
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   onSubmit: (value: string) => void;
   isLoading?: boolean;
@@ -27,6 +28,7 @@ interface AnimatedFileTextareaProps {
 
 const AnimatedFileTextarea = ({
   placeholders,
+  prefill,
   onChange,
   onSubmit,
   isLoading,
@@ -222,6 +224,19 @@ const AnimatedFileTextarea = ({
       inputRef.current?.focus();
     }
   }, [isLoading]);
+
+  useEffect(() => {
+    if (typeof prefill === 'string' && !animating) {
+      setValue(prefill);
+      requestAnimationFrame(() => {
+        if (inputRef.current) {
+          inputRef.current.focus();
+          const len = prefill.length;
+          inputRef.current.setSelectionRange(len, len);
+        }
+      });
+    }
+  }, [prefill, animating]);
 
   return (
     <form

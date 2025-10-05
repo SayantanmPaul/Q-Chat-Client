@@ -17,6 +17,7 @@ const ConversationView = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [currentMessage, setCurrentMessage] = useState('');
   const [checkpointId, setCheckpointId] = useState<string | null>(null);
+  const [prefill, setPrefill] = useState<string>('');
   const autoScrollRef = useChatScroll(messages);
 
   const { startStream } = useChatStream({
@@ -127,10 +128,11 @@ const ConversationView = () => {
                 }
                 onSubmit={onSubmit}
                 isLoading={isLoading}
+                prefill={prefill}
               />
               {messages.length < 1 && (
                 <div className="px-2 lg:px-3">
-                  <ExampleQueries />
+                  <ExampleQueries onSelect={setPrefill} />
                 </div>
               )}
             </div>

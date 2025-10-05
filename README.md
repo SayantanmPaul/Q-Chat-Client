@@ -15,10 +15,6 @@ An onversational agentic platform designed to make financial literacy accessible
 
 - **Web Search Integration**: The Agent can perform web searches (web crawl-based) on demand to provide up-to-date and relevant information, showing the user with the concurent information. 
 
-- **Responsive Design**: A fully responsive interface that works seamlessly on desktop and mobile devices, featuring an adaptable sidebar.
-
-- **Developer Playground**: A dedicated `/playground` route for testing individual UI components.
-
 ⚠️ Features like **Chat History**, **Search Conversation** won't work as ``authentication strategy`` hasn't been designd/configured yet from the backend. 
 
 ### A Quick Overview of the Agent Architecture
