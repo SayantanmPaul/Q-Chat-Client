@@ -14,6 +14,18 @@ export interface QChatStoreType {
   conversationList: ChatMessage[];
   setConversationList: (list: ChatMessage[]) => void;
 
+  isUserAuthenticated: boolean;
+  setIsUserAuthenticated: (auth: boolean) => void;
+
+  isMobileView: boolean;
+  setIsMobileView: (view: boolean) => void;
+
+  isSidebarOpen: boolean;
+  setIsSidebarOpen: (open: boolean) => void;
+
+  isSignInDrawerOpen: boolean;
+  setIsSignInDrawerOpen: (open: boolean) => void;
+
   setClearStore: () => void;
 }
 
@@ -27,6 +39,19 @@ export const useQchatStore = create<QChatStoreType>()(
       setSelectedModel: model => set({ selectedModel: model }),
       setIsLoading: loading => set({ isLoading: loading }),
       setConversationList: list => set({ conversationList: list }),
+
+      isUserAuthenticated: false,
+      setIsUserAuthenticated: auth => set({ isUserAuthenticated: auth }),
+
+      isMobileView: false,
+      setIsMobileView: view => set({ isMobileView: view }),
+
+      isSidebarOpen: true,
+      setIsSidebarOpen: open => set({ isSidebarOpen: open }),
+
+      isSignInDrawerOpen: false,
+      setIsSignInDrawerOpen: open => set({ isSignInDrawerOpen: open }),
+
       setClearStore() {
         set({
           selectedModel: null,

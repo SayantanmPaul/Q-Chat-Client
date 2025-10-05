@@ -1,8 +1,25 @@
 import localFont from 'next/font/local';
 
 const fontBriColage = localFont({
-  src: './BricolageGrotesque-SemiBold.woff2',
+  src: [
+    {
+      path: './BricolageGrotesque-Medium.woff2',
+      weight: '500',
+      style: 'normal',
+    },
+    {
+      path: './BricolageGrotesque-Bold.woff2',
+      weight: '700',
+      style: 'normal',
+    },
+    {
+      path: './BricolageGrotesque-SemiBold.woff2',
+      weight: '600',
+      style: 'normal',
+    },
+  ],
   variable: '--font-briColage',
+  display: 'swap',
 });
 
 const fontDepartureMono = localFont({

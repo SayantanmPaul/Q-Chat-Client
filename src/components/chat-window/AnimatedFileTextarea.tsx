@@ -1,11 +1,9 @@
-'use client';
-
 import { cn } from '@/lib/utils';
-import { ArrowUpIcon, LoaderCircleIcon } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import ModelSelectionDropDown from '../chat-window/ModelSelection';
-import { useQchatStore } from '@/store/qchatStore';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import FileUploader from '../ui/FileUploader';
+import { Button } from '../ui/button';
+import { CornerDownRightIcon, GlobeIcon } from 'lucide-react';
 
 interface PixelData {
   x: number;
@@ -20,28 +18,21 @@ interface NewData {
   color: string;
 }
 
-interface TextAreaProps {
+interface AnimatedFileTextareaProps {
   placeholders: string[];
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   onSubmit: (value: string) => void;
-  modelData: { name: string; description: string }[];
   isLoading?: boolean;
-  currentModel: { name: string; description?: string } | null;
-  onModelChange: (model: { name: string; description?: string }) => void;
 }
 
-export function AskToLlmTextarea({
+const AnimatedFileTextarea = ({
   placeholders,
   onChange,
   onSubmit,
-  modelData,
   isLoading,
-  onModelChange,
-}: TextAreaProps) {
+}: AnimatedFileTextareaProps) => {
   const [currentPlaceholder, setCurrentPlaceholder] = useState(0);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-
-  const { selectedModel } = useQchatStore();
 
   useEffect(() => {
     const startAnimation = () => {
@@ -235,8 +226,7 @@ export function AskToLlmTextarea({
   return (
     <form
       className={cn(
-        'relative mx-auto flex w-full max-w-sm flex-col gap-2 overflow-hidden rounded-2xl border-2 border-neutral-700/40 bg-white p-2 shadow-lg shadow-neutral-900 transition duration-200 focus:border-neutral-700 md:max-w-xl lg:max-w-[820px] dark:bg-[#452A7C1A]/90',
-        value && 'bg-gray-50',
+        'shadow-lgtransition relative mx-auto flex w-full flex-col gap-5 overflow-hidden rounded-[28px] border border-[#404040]/40 bg-[#000000]/40 p-3 duration-200 focus:border-neutral-700',
       )}
       onSubmit={handleSubmit}
     >
@@ -252,14 +242,13 @@ export function AskToLlmTextarea({
         value={value}
         rows={3}
         className={cn(
-          'relative z-50 my-2 field-sizing-content min-h-12 w-full resize-none bg-transparent px-2 text-black focus:ring-0 focus:outline-none sm:text-base dark:text-white',
+          'font-briColage relative z-50 field-sizing-content min-h-12 w-full resize-none truncate bg-transparent px-2 py-1 text-sm leading-7 font-medium whitespace-pre-wrap text-white select-none focus:ring-0 focus:outline-none sm:text-base lg:text-base',
           animating && 'text-transparent dark:text-transparent',
           'max-h-60 overflow-y-auto',
         )}
         placeholder={undefined}
       />
-
-      <div className="pointer-events-none absolute inset-0 flex items-start pt-4 pl-4 sm:pl-5">
+      <div className="pointer-events-none absolute inset-0 flex items-start pt-4 pl-5">
         <AnimatePresence mode="wait">
           {!value && (
             <motion.p
@@ -268,7 +257,7 @@ export function AskToLlmTextarea({
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: -15, opacity: 0 }}
               transition={{ duration: 0.3, ease: 'linear' }}
-              className="truncate font-normal text-neutral-500 select-none sm:text-base dark:text-zinc-500"
+              className="font-briColage truncate text-sm leading-7 font-medium text-[#71717B] select-none lg:text-base"
             >
               {placeholders[currentPlaceholder]}
             </motion.p>
@@ -276,31 +265,57 @@ export function AskToLlmTextarea({
         </AnimatePresence>
       </div>
       <div className="flex w-full items-end justify-between">
-        <ModelSelectionDropDown
-          modelData={modelData}
-          selectedModel={selectedModel}
-          onModelChange={onModelChange}
-        />
-        <button
-          disabled={!value}
-          type="submit"
-          className="bg-primary group dark:bg-primary hover:dark:bg-primary/80 flex h-10 w-10 cursor-pointer items-center justify-center overflow-visible rounded-lg transition duration-300 disabled:cursor-not-allowed disabled:bg-neutral-300 dark:disabled:bg-neutral-700"
-        >
-          {isLoading ? (
-            <LoaderCircleIcon
-              strokeWidth={2.5}
-              size={22}
-              className="animate-spin text-neutral-700 group-disabled:text-neutral-500"
-            />
-          ) : (
-            <ArrowUpIcon
-              strokeWidth={2.7}
-              size={22}
-              className="text-neutral-700 group-disabled:text-neutral-500"
-            />
-          )}
-        </button>
+        <div className="flex items-center gap-2 lg:gap-3">
+          <FileUploader
+            onFileSelected={(file: File) => {
+              console.log(file);
+            }}
+          />
+          <SearchEnebledButton />
+        </div>
+        <SubmitButton type="submit" disabled={!value || animating} />
       </div>
     </form>
   );
-}
+};
+
+export default AnimatedFileTextarea;
+
+export const SearchEnebledButton = () => {
+  return (
+    <Button className="flex h-9 w-auto gap-2 rounded-full bg-[#404040]/40 text-[#BAC0CC] hover:bg-[#2B2B2B]/60 lg:h-10 lg:p-[9px]">
+      <GlobeIcon
+        size={20}
+        strokeWidth={1.8}
+        className="h-4 w-4 lg:h-5 lg:w-5"
+      />
+      <p className="font-briColage text-xs leading-5 font-semibold lg:text-sm">
+        search enabled
+      </p>
+    </Button>
+  );
+};
+
+export const SubmitButton = ({
+  disabled,
+  ...props
+}: React.ComponentProps<typeof Button>) => {
+  return (
+    <Button
+      disabled={disabled}
+      {...props}
+      className={`flex h-9 w-20 cursor-pointer gap-1 rounded-full bg-gradient-to-br from-[#3DDBB0] to-[#89E06C] py-3 text-[#161616] lg:h-10 lg:w-24 ${disabled ? 'cursor-not-allowed opacity-80' : ''} `}
+    >
+      <>
+        <CornerDownRightIcon
+          size={16}
+          strokeWidth={2.6}
+          className="h-3.5 w-3.5 lg:h-4 lg:w-4"
+        />
+        <p className="font-briColage text-xs leading-7 font-bold lg:text-sm">
+          Send
+        </p>
+      </>
+    </Button>
+  );
+};

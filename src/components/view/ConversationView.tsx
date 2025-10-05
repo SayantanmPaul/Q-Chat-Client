@@ -1,13 +1,16 @@
 'use client';
-import useChatScroll from '@/hooks/useChatScroll';
+// import useChatScroll from '@/hooks/useChatScroll';
 import { useQchatStore } from '@/store/qchatStore';
-import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import { AskToLlmTextarea } from '../ui/AskToLlmTextarea';
 import { useChatStream } from '@/hooks/useChatStream';
 import { Message } from '@/types/message-type';
 import MessageArea from '../chat-window/MessageArea';
-import { useGetCurrentModel } from '@/lib/queries/chat.queries';
+import GreetingMessage from '../chat-window/GreetingMessage';
+import ExampleQueries from '../chat-window/ExampleQueries';
+import useChatScroll from '@/hooks/useChatScroll';
+import { AnimatePresence, motion } from 'motion/react';
+import NavbarItemsContainer from '../chat-window/NavbarItemsContainer';
+import AnimatedFileTextarea from '../chat-window/AnimatedFileTextarea';
 
 const ConversationView = () => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -20,11 +23,8 @@ const ConversationView = () => {
     baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}/chat-stream` || '',
   });
 
-  const { data: modelList } = useGetCurrentModel();
-
   const {
     selectedModel,
-    setSelectedModel,
     // setConversationList,
     setClearStore,
     isLoading,
@@ -47,6 +47,7 @@ const ConversationView = () => {
         content: value,
         isUser: true,
         type: 'message',
+        isLoading: false,
       },
     ]);
     setCurrentMessage('');
@@ -83,112 +84,61 @@ const ConversationView = () => {
   ];
 
   return (
-    <div className="relative flex h-screen max-h-[calc(100vh-0px)] flex-1 bg-[#0D0D0D] px-4 md:max-h-full lg:max-h-full lg:px-0 dark:bg-[#0D0D0D]">
-      <div
-        className={`flex h-full w-full flex-1 flex-col gap-4 overflow-y-auto ${messages.length > 0 ? 'justify-end' : 'justify-center'}`}
-      >
-        <div
-          className={`relative flex flex-col gap-0 pb-8 md:mx-0 lg:mx-0 ${messages.length > 0 ? 'h-full' : 'h-auto gap-8'}`}
+    <div className="relative flex h-screen max-h-[calc(100vh-0px)] flex-1 bg-[#0D0D0D] px-4 md:max-h-full lg:max-h-full lg:px-0">
+      <div className="pointer-events-none absolute inset-0 h-full w-auto bg-[url(/images/Background.svg)] bg-size-[auto_140vh] bg-center bg-no-repeat opacity-70 blur-3xl" />
+      <AnimatePresence>
+        <motion.div
+          transition={{ duration: 0.5 }}
+          animate={{ justifyContent: messages.length > 0 ? 'end' : 'center' }}
+          className={`relative flex h-full w-full flex-1 flex-col items-center gap-4 overflow-y-auto ${messages.length > 0 ? 'justify-end' : 'justify-center'} `}
         >
-          <div
-            className="scrolling-touch flex-1 overflow-y-auto"
-            ref={autoScrollRef}
-          >
-            {messages.length < 1 ? (
-              <Header />
-            ) : (
-              <>
-                <div className="sticky top-0 left-0 z-20">
-                  <div className="flex w-full items-center justify-center bg-[#0D0D0D] pt-4">
-                    <Logo
-                      imageClass="w-8 h-8"
-                      textClass="text-2xl"
-                      onClick={() => {
-                        setClearStore();
-                      }}
-                    />
-                  </div>
-                  <div className="pointer-events-none h-12 w-full bg-gradient-to-b from-[#0D0D0D] to-transparent" />
-                </div>
-                <div
-                  className={`mx-auto flex w-full max-w-sm flex-col space-y-4 pb-8 md:max-w-[548px] lg:max-w-[860px]`}
-                >
-                  <MessageArea messages={messages} />
-                </div>
-              </>
-            )}
+          <div className="absolute top-0 z-10 w-full bg-[#0D0D0D] lg:bg-transparent">
+            <NavbarItemsContainer />
           </div>
-          <AskToLlmTextarea
-            placeholders={placeholders}
-            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-              setCurrentMessage(e.target.value)
-            }
-            onSubmit={onSubmit}
-            modelData={modelList?.data}
-            isLoading={isLoading}
-            currentModel={selectedModel}
-            onModelChange={setSelectedModel}
-          />
-        </div>
-        <div className="absolute bottom-2 left-1/2 -translate-x-1/2">
-          <Disclaimer />
-        </div>
-      </div>
+          <div
+            className={`relative flex w-full flex-col items-center lg:px-1 ${messages.length > 0 ? 'h-full gap-0 pb-4' : 'h-auto gap-5 pb-0 lg:gap-12'}`}
+          >
+            <div
+              className="scrolling-touch w-full flex-1 overflow-y-auto pt-8"
+              ref={autoScrollRef}
+            >
+              {messages.length < 1 ? (
+                <div className="flex w-full justify-center">
+                  <div className="flex w-full max-w-[820px] items-start px-3">
+                    <GreetingMessage />
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <div className="sticky top-7 left-0 z-20 lg:top-16 lg:hidden">
+                    <div className="pointer-events-none h-12 w-full bg-gradient-to-b from-[#0D0D0D] to-transparent" />
+                  </div>
+                  <div className="mx-auto flex w-full max-w-sm flex-col md:max-w-[548px] lg:max-w-[936px]">
+                    <MessageArea messages={messages} />
+                  </div>
+                </>
+              )}
+            </div>
+            <div className="flex w-full max-w-[820px] flex-col gap-4">
+              <AnimatedFileTextarea
+                placeholders={placeholders}
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                  setCurrentMessage(e.target.value)
+                }
+                onSubmit={onSubmit}
+                isLoading={isLoading}
+              />
+              {messages.length < 1 && (
+                <div className="px-2 lg:px-3">
+                  <ExampleQueries />
+                </div>
+              )}
+            </div>
+          </div>
+        </motion.div>
+      </AnimatePresence>
     </div>
   );
 };
 
 export default ConversationView;
-
-const Header = () => {
-  return (
-    <div className="flex flex-col items-center justify-center gap-3 select-none lg:gap-5">
-      <Logo
-        imageClass="lg:w-12 lg:h-12 w-10 h-10 pr-1"
-        textClass="lg:text-4xl text-3xl"
-      />
-      <h2 className="font-briColage text-sm font-medium lg:text-lg lg:font-semibold dark:text-[#EFEFEF]">
-        Qurious about finance? Start here!
-      </h2>
-    </div>
-  );
-};
-
-const Logo = ({
-  imageClass,
-  textClass,
-  onClick,
-}: {
-  imageClass?: string;
-  textClass?: string;
-  onClick?: () => void;
-}) => {
-  return (
-    <span
-      className="relative z-20 flex cursor-pointer items-center space-x-1"
-      onClick={onClick}
-    >
-      <Image
-        src="../logo/Q.svg"
-        className={imageClass}
-        width={60}
-        height={60}
-        alt="Q"
-        draggable={false}
-      />
-      <span
-        className={`font-briColage font-medium whitespace-pre text-black dark:text-[#EFEFEF] ${textClass}`}
-      >
-        chat
-      </span>
-    </span>
-  );
-};
-
-const Disclaimer = () => {
-  return (
-    <p className="font-departureMono w-full text-xs font-medium tracking-tighter text-nowrap text-neutral-400">
-      AI-generated, for reference only.
-    </p>
-  );
-};

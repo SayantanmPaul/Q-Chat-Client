@@ -5,11 +5,18 @@ export interface SearchInfo {
   error?: string | null;
 }
 
+export type UIBlock = {
+  loading: boolean;
+  tool?: 'c1_ui_generate';
+  content: string | null;
+};
+
 export interface Message {
   id: number;
   content: string;
   isUser: boolean;
   type: string;
-  isLoading?: boolean;
+  isLoading: boolean;
   searchInfo?: SearchInfo;
+  ui?: UIBlock;
 }

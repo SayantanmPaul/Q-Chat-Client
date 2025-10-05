@@ -5,20 +5,38 @@
 
 @font-face {
   font-family: 'Bricolage Grotesque';
-  font-display: swap;
+  font-display: auto;
+  font-weight: 500;
+  font-style: normal;
+  src: url('../../assets/fonts/BricolageGrotesque-Medium.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Bricolage Grotesque';
+  font-display: auto;
+  font-weight: 600;
+  font-style: normal;
   src: url('../../assets/fonts/BricolageGrotesque-SemiBold.woff2')
     format('woff2');
 }
 
 @font-face {
+  font-family: 'Bricolage Grotesque';
+  font-display: auto;
+  font-weight: 700;
+  font-style: normal;
+  src: url('../../assets/fonts/BricolageGrotesque-Bold.woff2') format('woff2');
+}
+
+@font-face {
   font-family: 'Departure Mono';
-  font-display: swap;
+  font-display: auto;
   src: url('../../assets/fonts/DepartureMono-Regular.woff2') format('woff2');
 }
 
 @font-face {
   font-family: 'Jost';
-  font-display: swap;
+  font-display: auto;
   src: url('../../assets/fonts/Jost-400-Book.woff2') format('woff2');
 }
 
@@ -211,4 +229,17 @@ body {
   ::-webkit-scrollbar {
     display: none;
   }
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #404040;
+  border-radius: 0.5rem;
 }
