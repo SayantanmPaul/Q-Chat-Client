@@ -70,7 +70,7 @@ export const MarkdownRenderer: Components = {
   ),
   th: ({ children, ...rest }) => (
     <th
-      className="font-briColage bg-accent p-3 text-sm font-semibold tracking-wide text-[#FAFAF9]"
+      className="font-briColage bg-accent/60 p-3 text-start text-base font-bold tracking-wide text-[#FAFAF9]"
       {...rest}
     >
       {children}

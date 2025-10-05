@@ -7,6 +7,7 @@ import AnimatedFileTextarea, {
 import LanguageSelector from '@/components/chat-window/LanguageSelector';
 import ModelSelectionDropDown from '@/components/chat-window/ModelSelection';
 import FileUploader from '@/components/ui/FileUploader';
+import ConversationLimitAlert from '@/components/chat-window/ConversationLimitAlert';
 import { ResponseLoader } from '@/components/ui/loader';
 import { useGetCurrentModel } from '@/lib/queries/chat.queries';
 import { useQchatStore } from '@/store/qchatStore';
@@ -78,6 +79,7 @@ const Page = () => {
         </div>
       </div>
       <TextAreaSection />
+      <ConversationLimitAlert remainingConversations={3} />
     </div>
   );
 };
