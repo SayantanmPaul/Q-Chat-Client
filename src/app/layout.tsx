@@ -5,8 +5,8 @@ import { fontBriColage, fontDepartureMono, fontJost } from '../../assets/fonts';
 import './globals.css';
 import QueryProvider from '@/lib/QueryProvider';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import Head from 'next/head';
 import { Toaster } from '@/components/ui/sonner';
+import '@crayonai/react-ui/styles/index.css';
 
 export const metadata: Metadata = {
   title:
@@ -79,37 +79,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <>
-      <Head>
-        <link
-          rel="preload"
-          as="image"
-          href="/images/Glow.svg"
-          type="image/svg+xml"
-          fetchPriority="high"
-        />
-        <link
-          rel="preload"
-          as="image"
-          href="/logo/Q.svg"
-          type="image/svg+xml"
-          fetchPriority="high"
-        />
-      </Head>
-      <QueryProvider>
-        <html lang="en" suppressHydrationWarning={true}>
-          <body
-            className={cn(
-              `dark antialiased ${fontBriColage.variable} ${fontDepartureMono.variable} ${fontJost.variable}`,
-            )}
-          >
-            {children}
-            <Toaster />
-            <ReactQueryDevtools initialIsOpen={false} />
-          </body>
-          <Analytics />
-        </html>
-      </QueryProvider>
-    </>
+    <QueryProvider>
+      <html lang="en" suppressHydrationWarning={true}>
+        <body
+          className={cn(
+            `dark antialiased ${fontBriColage.variable} ${fontDepartureMono.variable} ${fontJost.variable}`,
+          )}
+        >
+          {children}
+          <Toaster />
+          <ReactQueryDevtools initialIsOpen={false} />
+        </body>
+        <Analytics />
+      </html>
+    </QueryProvider>
   );
 }

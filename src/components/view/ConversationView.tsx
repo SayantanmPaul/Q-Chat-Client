@@ -47,6 +47,7 @@ const ConversationView = () => {
         content: value,
         isUser: true,
         type: 'message',
+        isLoading: false,
       },
     ]);
     setCurrentMessage('');

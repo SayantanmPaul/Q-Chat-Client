@@ -1,13 +1,20 @@
 import { Message, SearchInfo } from '@/types/message-type';
 import { ResponseLoader } from '../ui/loader';
 import { TextShimmer } from '../motion-primitives/text-shimmer';
-import { GlobeIcon, LibraryIcon, SearchIcon } from 'lucide-react';
+import {
+  GlobeIcon,
+  LibraryIcon,
+  PaintbrushIcon,
+  PencilRulerIcon,
+  SearchIcon,
+} from 'lucide-react';
 import { useQchatStore } from '@/store/qchatStore';
 import { useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 import { MarkdownRenderer } from '../ui/markdown-renderer';
+import { C1Component, ThemeProvider } from '@thesysai/genui-sdk';
 
 const SearchStages = ({ searchInfo }: { searchInfo: SearchInfo | null }) => {
   if (!searchInfo || !searchInfo.stages || searchInfo.stages.length === 0)
@@ -61,7 +68,7 @@ const SearchStages = ({ searchInfo }: { searchInfo: SearchInfo | null }) => {
                 Reading
               </span>
               {searchInfo.stages.includes('reading') && (
-                <div className="absolute top-6 -left-[8px] h-[calc(86%+1rem)] w-[1.5px] rounded-xl bg-gradient-to-b from-[#3DDBB0]/80 to-[#89E06C]"></div>
+                <div className="absolute top-6 -left-[8px] h-[calc(72%+1rem)] w-[1.5px] rounded-xl bg-gradient-to-b from-[#3DDBB0]/80 to-[#89E06C]"></div>
               )}
 
               {/* Search Results */}
@@ -99,8 +106,11 @@ const SearchStages = ({ searchInfo }: { searchInfo: SearchInfo | null }) => {
         {/* Writing Stage */}
         {searchInfo.stages.includes('writing') && (
           <div className="relative">
-            {/* Green dot with subtle glow effect */}
-            <div className="absolute top-1.5 -left-3 z-10 h-2.5 w-2.5 rounded-full bg-[#89E06C]"></div>
+            <PencilRulerIcon
+              size={18}
+              strokeWidth={1.5}
+              className="absolute top-0 -left-4 h-4.5 w-4.5 text-[#D1D6DC]"
+            />
             <span className="font-briColage ml-3 text-xs leading-5 font-medium text-[#D1D6DC]">
               Writing answer
             </span>
@@ -144,6 +154,43 @@ const MessageArea = ({ messages }: { messages: Message[] }) => {
               <SearchStages searchInfo={message.searchInfo} />
             )}
 
+            {!message.isUser && message.ui && (
+              <ThemeProvider
+                darkTheme={{
+                  fontBody: 'font-briColage',
+                  fontHeadingLarge: 'font-briColage',
+                  fontHeadingMedium: 'font-briColage',
+                  fontHeadingSmall: 'font-briColage',
+                  fontHeadingExtraSmall: 'font-briColage',
+                  fontBodyHeavy: 'font-briColage',
+                  backgroundFills: 'bg-[#404040]/30',
+                }}
+                mode="dark"
+              >
+                <div className="mb-3 w-full">
+                  {message.ui.loading ? (
+                    <div className="flex items-center py-2 text-[#D1D6DC]">
+                      <PaintbrushIcon
+                        size={18}
+                        strokeWidth={1.5}
+                        className="h-4.5 w-4.5"
+                      />
+                      <span className="font-briColage ml-2 text-xs leading-5 font-medium">
+                        Generating UI
+                      </span>
+                    </div>
+                  ) : (
+                    message.ui.content && (
+                      <C1Component
+                        c1Response={message.ui.content}
+                        isStreaming={message.isLoading}
+                      />
+                    )
+                  )}
+                </div>
+              </ThemeProvider>
+            )}
+
             {/* Message Content */}
             <div
               className={`font-briColage flex w-fit flex-col items-start gap-2 font-medium ${
@@ -155,13 +202,15 @@ const MessageArea = ({ messages }: { messages: Message[] }) => {
               {!message.content || message.isLoading ? (
                 <ResponseLoader />
               ) : (
-                <ReactMarkdown
-                  components={MarkdownRenderer}
-                  remarkPlugins={[remarkGfm]}
-                  rehypePlugins={[rehypeRaw]}
-                >
-                  {message.content}
-                </ReactMarkdown>
+                <ThemeProvider mode="dark">
+                  <ReactMarkdown
+                    components={MarkdownRenderer}
+                    remarkPlugins={[remarkGfm]}
+                    rehypePlugins={[rehypeRaw]}
+                  >
+                    {message.content}
+                  </ReactMarkdown>
+                </ThemeProvider>
               )}
             </div>
           </div>

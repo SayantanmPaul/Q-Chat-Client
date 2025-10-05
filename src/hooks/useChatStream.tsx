@@ -62,6 +62,39 @@ export const useChatStream = ({ baseURL }: { baseURL: string }) => {
           );
         }
 
+        else if (data.type === 'ui_start') {
+          // show a shimmer/loader in UI area
+          updateMessage((prev) =>
+            prev.map((msg) =>
+              msg.id === aiResponseId
+                ? {
+                    ...msg,
+                    ui: { loading: true, tool: 'c1_ui_generate', content: null },
+                    isLoading: false,
+                  }
+                : msg
+            )
+          );
+        }
+
+        else if (data.type === 'ui_content') {
+          // store the raw UI spec/content; your renderer can pick this up
+          const uiContent: string =
+            typeof data.content === 'string' ? data.content : JSON.stringify(data.content);
+
+          updateMessage((prev) =>
+            prev.map((msg) =>
+              msg.id === aiResponseId
+                ? {
+                    ...msg,
+                    ui: { loading: false, tool: 'c1_ui_generate', content: uiContent },
+                    isLoading: false,
+                  }
+                : msg
+            )
+          );
+        }
+
         // Create search info with 'searching' stage
         else if (data.type === 'search_start') {
           const newSearchInfo = {

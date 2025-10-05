@@ -1,9 +1,8 @@
 'use client';
+
 import { cn } from '@/lib/utils';
-// import { IconLayoutSidebarRightCollapseFilled } from '@tabler/icons-react';
 import { AnimatePresence, motion } from 'motion/react';
 import React, { createContext, useContext, useState } from 'react';
-// import { Button } from './button';
 
 interface Links {
   label: string;
